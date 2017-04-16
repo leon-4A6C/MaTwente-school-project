@@ -18,3 +18,5 @@ to run gulp use this command in the MaTwente-school-project folder
 ```bash
 gulp watch
 ```
+
+pls only place files in the src directory
