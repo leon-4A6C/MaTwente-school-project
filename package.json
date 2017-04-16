@@ -1,0 +1,27 @@
+{
+  "name": "ma_twente",
+  "version": "1.0.0",
+  "description": "school project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leon-4A6C/MaTwente-school-project.git"
+  },
+  "author": "leon in 't Veld",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leon-4A6C/MaTwente-school-project/issues"
+  },
+  "homepage": "https://github.com/leon-4A6C/MaTwente-school-project#readme",
+  "devDependencies": {
+    "browser-sync": "^2.18.8",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-connect-php": "0.0.8",
+    "gulp-sass": "^3.1.0",
+    "gulp-uncss": "^1.0.6"
+  }
+}
