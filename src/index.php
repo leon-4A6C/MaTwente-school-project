@@ -6,5 +6,22 @@
     <link rel="stylesheet" href="styles/main.css">
   </head>
   <body>
+    <header>
+      <div class="profileBar">
+        <div class="profile">
+          <img src="images/profiles/defaultProfile.svg" alt="profile" class="profilePicture">
+        </div>
+      </div>
+      <nav>
+        <img src="images/icon.svg" alt="logo" class="logo">
+        <ul>
+          <a href="#"><li>stuff</li></a>
+          <a href="#"><li>stuff</li></a>
+          <a href="#"><li>stuff</li></a>
+          <a href="#"><li>stuff</li></a>
+          <a href="#"><li>stuff</li></a>
+        </ul>
+      </nav>
+    </header>
   </body>
 </html>
