@@ -9,7 +9,7 @@
     <header>
       <div class="profileBar">
         <div class="profile">
-          <img src="images/profiles/defaultProfile.svg" alt="profile" class="profilePicture">
+          <a href="#"><img src="images/profiles/defaultProfile.svg" alt="profile" class="profilePicture"></a>
         </div>
       </div>
       <img src="images/icon.svg" alt="logo" class="logo">
