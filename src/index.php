@@ -12,8 +12,8 @@
           <img src="images/profiles/defaultProfile.svg" alt="profile" class="profilePicture">
         </div>
       </div>
+      <img src="images/icon.svg" alt="logo" class="logo">
       <nav>
-        <img src="images/icon.svg" alt="logo" class="logo">
         <ul>
           <a href="#"><li>stuff</li></a>
           <a href="#"><li>stuff</li></a>

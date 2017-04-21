@@ -8,7 +8,7 @@ header
   position: fixed
   .profileBar
     background: $profileBar
-    z-index: 1
+    z-index: 100
     width: 100vw
     position: absolute
     top: 0
@@ -21,6 +21,12 @@ header
         width: 3em
         height: 3em
         border-radius: 50%
+  .logo
+    z-index: 101
+    position: absolute
+    top: 0
+    left: 0
+    margin: 1em 2.5em
   nav
     position: absolute
     top: 0
@@ -28,14 +34,11 @@ header
     background: $nav
     color: $primary
     width: 10em
-    .logo
-      margin: 1em auto
-      display: block
-      z-index: 2
+    z-index: 99
     ul
       list-style-type: none
       padding: 0
-      margin: 2em 0em
+      margin: 9em 0em
       min-height: 100vh
       a
         color: inherit
