@@ -16,9 +16,9 @@ gulp.task('sass', function(){
   return gulp.src('src/styles/main.sass')
     .pipe(sass()) // Using gulp-sass
     .pipe(autoprefixer())
-    .pipe(uncss({
-      html: ["src/**/*.html", "src/**/*.php"]
-    }))
+    // .pipe(uncss({
+    //   html: ["src/**/*.html", "src/**/*.php"]
+    // }))
     .pipe(gulp.dest('src/styles'))
     .pipe(browserSync.reload({
       stream: true

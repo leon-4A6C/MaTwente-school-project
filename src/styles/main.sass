@@ -4,8 +4,31 @@ body
   margin: 0
   padding: 0
 
+a
+  text-decoration: none
+  color: black
+
+
+leftArrow
+  @include triangle(3em, $secundary, left)
+
 header
+  z-index: 100
   position: fixed
+  .navArrow
+    position: fixed
+    top: 50%
+    transform: translateY(-50%)
+    transition: left 300ms, transform 300ms
+    width: auto
+    height: 3em
+    cursor: pointer
+  .navArrowOpen
+    transform: translateY(-50%) scaleX(-1)
+    margin-left: 0.2em
+    transition: margin-left 300ms
+    &:hover
+      margin-left: 0.4em
   .profileBar
     background: $profileBar
     z-index: 100
@@ -13,10 +36,42 @@ header
     position: absolute
     top: 0
     left: 0
+    .status
+      float: right
+      display: inline-block
+      text-align: center
+      margin: 1em 1em
+      span
+        color: rgba(255, 255, 255, 0.9)
+      a
+        color: rgba(255,255,255,0.5)
+        &:hover
+          text-decoration: underline
     .profile
       display: inline-block
       float: right
       margin: 0.5em 1em
+      &:hover ul
+        max-height: 4.5em
+      ul
+        max-height: 0em
+        list-style-type: none
+        margin: 0.55em 0em
+        position: absolute
+        right: 0
+        text-align: center
+        background: $profileBar
+        transition: max-height 300ms
+        padding: 0
+        overflow: hidden
+        li
+          a
+            display: block
+            padding: 0.4em 1em
+            color: $primary
+            &:hover
+              text-decoration: underline
+
       .profilePicture
         width: 3em
         height: 3em
@@ -27,6 +82,10 @@ header
     top: 0
     left: 0
     margin: 1em 2.5em
+    transition: opacity 300ms
+    opacity: 1
+  .logoGone
+    opacity: 0
   nav
     position: absolute
     top: 0
@@ -35,16 +94,38 @@ header
     color: $primary
     width: 10em
     z-index: 99
+    min-height: calc(100vh - 4em)
+    margin-top: 4em
+    padding-top: 4em
+    overflow-x: hidden
+    transition: width 300ms
     ul
       list-style-type: none
       padding: 0
-      margin: 9em 0em
-      min-height: 100vh
-      a
-        color: inherit
-        text-decoration: none
-        li
-          margin: 1em 0em
-          text-align: center
+      text-align: center
+      transition: max-height 600ms
+      li
+        transition: background 300ms
+        &:hover
+          background: $profileBar
+        &:hover ul
+          max-height: 10em
+        a
+          text-decoration: none
+          padding: 1em 0em
+          display: block
+          color: inherit
           &:hover
-            letter-spacing: 0.01em
+            letter-spacing: 0.02em
+        ul
+          max-height: 0
+          overflow: hidden
+          li
+            a
+  .navClosed
+    width: 0px
+
+main
+  position: absolute
+  right: 0
+  bottom: 0
