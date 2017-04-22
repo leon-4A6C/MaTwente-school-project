@@ -3,6 +3,7 @@ school project
 
 # install
 * install node.js: https://nodejs.org/en/download/
+* in the installer don't forget to check the add to PATH button
 
 ```bash
 git clone https://github.com/leon-4A6C/MaTwente-school-project
