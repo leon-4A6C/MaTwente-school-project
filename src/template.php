@@ -11,7 +11,15 @@
     <header>
       <div class="profileBar">
         <div class="profile">
-          <a href="#"><img src="images/profiles/defaultProfile.svg" alt="profile" class="profilePicture"></a>
+          <a href="#">
+            <?php
+            if ($_SESSION["profileImg"]) {
+              echo "<img src=\"images/profiles/".$_SESSION["profileImg"]."\" alt=\"profile\" class=\"profilePicture\">";
+            } else {
+              echo "<img src=\"images/profiles/defaultProfile.svg\" alt=\"profile\" class=\"profilePicture\">";
+            }
+            ?>
+          </a>
           <ul>
             <li>
               <a href="#">logout</a>
@@ -22,7 +30,8 @@
           </ul>
         </div>
         <div class="status">
-          <span>john doe</span><br>
+          <span>
+            <?php if($_SESSION["name"]){echo $_SESSION["name"];} else {echo "John Doe";} ?></span><br>
           <a href="#">logout</a>
         </div>
       </div>
