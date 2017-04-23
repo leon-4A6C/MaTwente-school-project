@@ -1,0 +1,53 @@
+[
+  {
+    "medewerkers": [
+      {
+        "title": "overzicht",
+        "path": "medewerkers-overzicht.php",
+        "type": "user"
+      }
+    ]
+  },
+  {
+    "configuraties": [
+      {
+        "title": "overzicht",
+        "path": "configuraties-overzicht.php",
+        "type": "user"
+      },
+      {
+        "title": "toevoegen",
+        "path": "configuraties-toevoegen.php",
+        "type": "user"
+      }
+    ]
+  },
+  {
+    "apparaten": [
+      {
+        "title": "overzicht",
+        "path": "apparaten-overzicht.php",
+        "type": "user"
+      },
+      {
+        "title": "toevoegen",
+        "path": "apparaten-overzicht.php",
+        "type": "admin"
+      }
+    ]
+  },
+  {
+    "meldingen": [
+      {
+        "title": "overzicht",
+        "path": "meldingen-overzicht.php",
+        "type": "user"
+      },
+      {
+        "title": "toevoegen",
+        "path": "meldingen-toevoegen.php",
+        "type": "user"
+      }
+    ]
+  }
+]

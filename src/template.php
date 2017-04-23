@@ -1,4 +1,5 @@
 <?php session_start(); ?>
+<?php $_SESSION["user_type"] = "user"; ?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -38,33 +39,24 @@
       <img src="images/icon.svg" alt="logo" class="logo logoGone">
       <nav class="navClosed">
         <ul>
-          <li>
-            <a href="#">medewerkers</a>
-            <ul>
-              <li><a href="#">overzicht</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="#">configuraties</a>
-            <ul>
-              <li><a href="#">overzicht</a></li>
-              <li><a href="#">toevoegen</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="#">apparaten</a>
-            <ul>
-              <li><a href="#">overzicht</a></li>
-              <li><a href="#">toevoegen</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="#">meldingen</a>
-            <ul>
-              <li><a href="#">overzicht</a></li>
-              <li><a href="#">toevoegen</a></li>
-            </ul>
-          </li>
+          <?php
+            $menuItemsFile = fopen("menuItems.json", "r") or die("unable to open menuItems.json");
+            $menuItems = json_decode(fread($menuItemsFile, filesize("menuItems.json")), true);
+            fclose($menuItemsFile);
+            foreach ($menuItems as $key => $value) {
+              echo "<li>";
+              foreach ($value as $key => $value) {
+                echo "<a href='#'>$key</a><ul>";
+                foreach ($value as $key => $value) {
+                  if ($_SESSION["user_type"] === $value["type"] || $_SESSION["user_type"] === "admin") {
+                    echo "<li><a href='".$value["path"]."'>".$value["title"]."</a><li>";
+                  }
+                }
+                echo "</ul>";
+              }
+              echo "</li>";
+            }
+          ?>
         </ul>
       </nav>
       <img class="navArrow navArrowOpen" src="images/leftArrow.svg" alt="leftArrow">
