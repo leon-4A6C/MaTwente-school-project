@@ -14,7 +14,7 @@ gulp.task("watch", ["sass", "browserSync"],function() {
 
 gulp.task('sass', function(){
   return gulp.src('src/styles/main.sass')
-    .pipe(sass()) // Using gulp-sass
+    .pipe(sass().on("error", sass.logError)) // Using gulp-sass
     .pipe(autoprefixer())
     // .pipe(uncss({
     //   html: ["src/**/*.html", "src/**/*.php"]
