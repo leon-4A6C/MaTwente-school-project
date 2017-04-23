@@ -1,5 +1,9 @@
 <?php session_start(); ?>
-<?php $_SESSION["user_type"] = "user"; ?>
+<?php
+$_SESSION["user_type"] = "user";
+$_SESSION["profileImg"] = "defaultProfile.svg";
+$_SESSION["name"] = "John Doe";
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -14,13 +18,7 @@
       <div class="profileBar">
         <div class="profile">
           <a href="#">
-            <?php
-            if (empty($_SESSION["profileImg"])) {
-              echo "<img src=\"images/profiles/defaultProfile.svg\" alt=\"profile\" class=\"profilePicture\">";
-            } else {
-              echo "<img src=\"images/profiles/".$_SESSION["profileImg"]."\" alt=\"profile\" class=\"profilePicture\">";
-            }
-            ?>
+            <?php echo "<img src=\"images/profiles/".$_SESSION["profileImg"]."\" alt=\"profile\" class=\"profilePicture\">";?>
           </a>
           <ul>
             <li>
@@ -32,8 +30,7 @@
           </ul>
         </div>
         <div class="status">
-          <span>
-            <?php if(empty($_SESSION["name"])){echo "John Doe";} else {echo $_SESSION["name"];} ?></span><br>
+          <span><?php echo $_SESSION["name"]; ?></span><br>
           <a href="#">logout</a>
         </div>
       </div>
