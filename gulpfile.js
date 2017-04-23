@@ -26,13 +26,17 @@ gulp.task('sass', function(){
 });
 
 gulp.task("php", function() {
-  php.server({base: "src", port: 8010, keepalive: true});
+  php.server({base: "src",
+   port: 3000,
+   keepalive: true,
+   bin:'c:/xampp/php/php.exe',
+   ini:'c:/xampp/php/php.ini',
+   base:'./www'});
 });
 
 gulp.task('browserSync', ["php"], function() {
   browserSync({
-    proxy: "localhost:8010",
-    port: 8080,
+    proxy: "localhost:3000",
     open: true,
     notify: false
   })
