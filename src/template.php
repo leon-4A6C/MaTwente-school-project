@@ -15,10 +15,10 @@
         <div class="profile">
           <a href="#">
             <?php
-            if ($_SESSION["profileImg"]) {
-              echo "<img src=\"images/profiles/".$_SESSION["profileImg"]."\" alt=\"profile\" class=\"profilePicture\">";
-            } else {
+            if (empty($_SESSION["profileImg"])) {
               echo "<img src=\"images/profiles/defaultProfile.svg\" alt=\"profile\" class=\"profilePicture\">";
+            } else {
+              echo "<img src=\"images/profiles/".$_SESSION["profileImg"]."\" alt=\"profile\" class=\"profilePicture\">";
             }
             ?>
           </a>
@@ -33,7 +33,7 @@
         </div>
         <div class="status">
           <span>
-            <?php if($_SESSION["name"]){echo $_SESSION["name"];} else {echo "John Doe";} ?></span><br>
+            <?php if(empty($_SESSION["name"])){echo "John Doe";} else {echo $_SESSION["name"];} ?></span><br>
           <a href="#">logout</a>
         </div>
       </div>
