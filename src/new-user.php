@@ -13,6 +13,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MA Twente</title>
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
   </head>
   <body>
@@ -66,11 +67,11 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     </header>
     <main class="new-user">
       <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-        <input required type="text" name="name" value="" placeholder="naam"><br>
-        <input required type="text" name="lastname" value="" placeholder="achternaam"><br>
+        <input required type="text" name="name" value="" placeholder="naam">
+        <input required type="text" name="lastname" value="" placeholder="achternaam">
         <label for="gender">geslacht</label>
         <label for="gender">m</label><input required type="radio" name="gender" value="m" checked="true">
-        <label for="gender">v</label><input required type="radio" name="gender" value="v"><br>
+        <label for="gender">v</label><input required type="radio" name="gender" value="v">
         <select required name="department_id">
           <option value="false">afdeling</option>
           <?php
@@ -79,10 +80,10 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
             echo "<option value='".$value["id"]."'>".$value["naam"]."</option>";
           }
           ?>
-        </select><br>
-        <input required type="email" name="email" value="" placeholder="email"><br>
-        <input required type="text" name="username" value="" placeholder="gebruikersnaam"><br>
-        <input required type="password" name="password" value="" placeholder="wachtwoord"><br>
+        </select>
+        <input required type="email" name="email" value="" placeholder="email">
+        <input required type="text" name="username" value="" placeholder="gebruikersnaam">
+        <input required type="password" name="password" value="" placeholder="wachtwoord">
         <input type="submit" name="submit" value="cre&euml;er account">
       </form>
     </main>
