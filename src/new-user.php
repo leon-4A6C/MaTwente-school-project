@@ -64,8 +64,32 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       </nav>
       <img class="navArrow navArrowOpen" src="images/leftArrow.svg" alt="leftArrow">
     </header>
-    <main>
-
+    <main class="new-user">
+      <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+        <label for="name">naam</label>
+        <input required type="text" name="name" value=""><br>
+        <label for="lastname">achternaam</label>
+        <input required type="text" name="lastname" value=""><br>
+        <label for="gender">geslacht</label>
+        m<input required type="radio" name="gender" value="m" checked="true">
+        v<input required type="radio" name="gender" value="v"><br>
+        <label for="department_id">afdeling</label>
+        <select required name="department_id">
+          <?php
+          $afdelingen = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM afdelingen");
+          foreach ($afdelingen as $key => $value) {
+            echo "<option value='".$value["id"]."'>".$value["naam"]."</option>";
+          }
+          ?>
+        </select><br>
+        <label for="email">email</label>
+        <input required type="email" name="email" value=""><br>
+        <label for="gebruikersnaam">gebruikersnaam</label>
+        <input required type="text" name="username" value=""><br>
+        <label for="password">wachtwoord</label>
+        <input required type="password" name="password" value=""><br>
+        <input type="submit" name="submit" value="cre&euml;er account">
+      </form>
     </main>
     <script src="javascript/nav.js" charset="utf-8"></script>
   </body>
