@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>user</title>
-    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="styles/main.css">
   </head>
   <body class="login">
     <form name="form" action="" method="post">
