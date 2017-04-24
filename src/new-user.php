@@ -76,6 +76,16 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           }
           ?>
         </select>
+        <select required name="pc_nummer">
+          <option value="false">configuratie</option>
+          <?php
+          $configuraties = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT pc_nummer FROM configuraties");
+          foreach ($configuraties as $key => $value) {
+            echo "<option value='".$value["pc_nummer"]."'>".$value["pc_nummer"]."</option>";
+          }
+          ?>
+        </select>
+        <input type="number" min="100" max="999" name="intern_tel" value="" placeholder="intern telefoonnummer">
         <input required type="email" name="email" value="" placeholder="email">
         <input required type="text" name="username" value="" placeholder="gebruikersnaam">
         <input required type="password" name="password" value="" placeholder="wachtwoord">
@@ -84,7 +94,16 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         <input type="submit" name="submit" value="cre&euml;er account">
       </form>
       <?php #form handler
-
+      if (isset($_POST["submit"])) {
+        $profile_path = "defaultProfile.svg";
+        if ($_POST["department_id"] == false) {
+          $_POST["department_id"] = null;
+        }
+        insertDataToDb("83.82.240.2", "user", "pass", "project", "
+        INSERT INTO gebruikers(voornaam, achternaam, afdelingen_id, intern_tel, email, configuraties_nummer, gebruikersnaam, wachtwoord, profile_path, toegangs_level)
+        VALUES('".$_POST["name"]."','".$_POST["lastname"]."', ".$_POST["department_id"].", ".$_POST["intern_tel"].", '".$_POST["email"]."', '".$_POST["pc_nummer"]."',
+         '".$_POST["username"]."', '".hash("sha256", $_POST["password"])."', '".$profile_path."')");
+      }
       ?>
     </main>
     <script src="javascript/nav.js" charset="utf-8"></script>
