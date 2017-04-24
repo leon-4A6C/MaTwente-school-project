@@ -3,17 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>user</title>
-    <style media="screen">
-      input {
-        display: block;
-        margin-bottom: 1em;
-      }
-      input:nth-child(4) {
-        margin-bottom: 0;
-      }
-    </style>
+    <link rel="stylesheet" href="/styles/login.sass">
   </head>
-  <body>
+  <body class="login">
     <form name="form" action="" method="post">
       <input required type="text" name="username" placeholder="username" value="">
       <input required type="password" name="password" placeholder="password" value="">
