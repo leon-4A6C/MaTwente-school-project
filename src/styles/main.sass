@@ -148,11 +148,18 @@ input[type= text], input[type= submit], input[type= email], input[type= password
   transition: border 300ms, color 300ms
 input[type=submit]
   width: 10em
+  cursor: pointer
+  transition: border 600ms, color 600ms
 select
   width: auto
 label
   color: rgba(0, 0, 0, 0.6)
   font-size: 1.3rem
+
+input[type=submit]:disabled, button:disabled
+  border: 0.1em solid rgb(180, 180, 180)
+  color: rgb(180, 180, 180)
+  cursor: auto
 
 input:active, input:focus, select:focus, select:active, textarea:focus, textarea:active
   outline: none
