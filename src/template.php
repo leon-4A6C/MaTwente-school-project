@@ -39,7 +39,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           <?php echo "<a href='$thisPage?logout=true'>logout</a>"; ?>
         </div>
       </div>
-      <img src="images/icon.svg" alt="logo" class="logo logoGone">
+      <img src="images/icon.svg" alt="logo" class="logo logoGone" style="display: none">
       <nav class="navClosed">
         <ul>
           <?php

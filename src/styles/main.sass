@@ -143,6 +143,7 @@ input[type= text], input[type= submit], input[type= email], input[type= password
   width: 13em
   font-size: 1.2rem
   color: $nav
+  transition: border 300ms
 input[type=submit]
   width: 10em
 select
@@ -150,3 +151,7 @@ select
 label
   color: rgba(0, 0, 0, 0.6)
   font-size: 1.3rem
+
+input:active, input:focus, select:focus, select:active
+  outline: none
+  border: 0.1em solid rgb(100, 125, 175)
