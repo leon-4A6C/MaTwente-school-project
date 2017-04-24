@@ -96,13 +96,14 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       <?php #form handler
       if (isset($_POST["submit"])) {
         $profile_path = "defaultProfile.svg";
+        $toegangs_level = "user";
         if ($_POST["department_id"] == false) {
           $_POST["department_id"] = null;
         }
         insertDataToDb("83.82.240.2", "user", "pass", "project", "
         INSERT INTO gebruikers(voornaam, achternaam, afdelingen_id, intern_tel, email, configuraties_nummer, gebruikersnaam, wachtwoord, profile_path, toegangs_level)
         VALUES('".$_POST["name"]."','".$_POST["lastname"]."', ".$_POST["department_id"].", ".$_POST["intern_tel"].", '".$_POST["email"]."', '".$_POST["pc_nummer"]."',
-         '".$_POST["username"]."', '".hash("sha256", $_POST["password"])."', '".$profile_path."')");
+         '".$_POST["username"]."', '".hash("sha256", $_POST["password"])."', '".$profile_path."', '".$toegangs_level."')");
       }
       ?>
     </main>
