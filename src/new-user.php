@@ -84,6 +84,8 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         <input required type="email" name="email" value="" placeholder="email">
         <input required type="text" name="username" value="" placeholder="gebruikersnaam">
         <input required type="password" name="password" value="" placeholder="wachtwoord">
+        <label for="profileImg">profiel foto</label>
+        <input type="file" accept="image/*; capture=camera" name="profileImg" size="40">
         <input type="submit" name="submit" value="cre&euml;er account">
       </form>
     </main>
