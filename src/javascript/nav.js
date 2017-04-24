@@ -1,6 +1,9 @@
 function updateItems() {
-  document.getElementsByTagName("main")[0].style.width = (window.innerWidth - document.getElementsByTagName("nav")[0].clientWidth)+"px";
-  document.getElementsByTagName("main")[0].style.minHeight = (window.innerHeight - document.getElementsByClassName("profileBar")[0].clientHeight)+"px";
+  var main = document.getElementsByTagName("main")[0];
+  main.style.width = (window.innerWidth - document.getElementsByTagName("nav")[0].clientWidth)+"px";
+  main.style.minHeight = (window.innerHeight - document.getElementsByClassName("profileBar")[0].clientHeight)+"px";
+  main.style.marginLeft = document.getElementsByTagName("nav")[0].clientWidth + "px";
+  main.style.marginTop = document.getElementsByClassName("profileBar")[0].clientHeight + "px";
   document.getElementsByClassName("navArrow")[0].style.left = document.getElementsByTagName("nav")[0].clientWidth+"px";
   requestAnimationFrame(updateItems);
 }

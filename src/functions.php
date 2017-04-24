@@ -49,9 +49,9 @@ function insertDataToDb($servername, $username, $password, $dbname, $tableName, 
   }
 
   if ($conn->query($sql) === TRUE) {
-    return "New record created successfully<meta http-equiv='refresh' content='1'>";
+    return true;
   } else {
-    return "Error: " . $sql . "<br>" . $conn->error;
+    return $conn->error;
   }
 }
 

@@ -61,12 +61,12 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       <img class="navArrow navArrowOpen" src="images/leftArrow.svg" alt="leftArrow">
     </header>
     <main class="new-user">
-      <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+      <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
         <input required type="text" name="name" value="" placeholder="naam">
         <input required type="text" name="lastname" value="" placeholder="achternaam">
         <label for="gender">geslacht</label><br>
-        <label for="male">m</label><input id="male" required type="radio" name="gender" value="m" checked="true">
-        <label for="female">v</label><input id="female" required type="radio" name="gender" value="v">
+        <label for="male">m </label><input id="male" required type="radio" name="gender" value="m" checked="true">&nbsp;&nbsp;&nbsp;
+        <label for="female">v </label><input id="female" required type="radio" name="gender" value="v">
         <select required name="department_id">
           <option value="false">afdeling</option>
           <?php
@@ -92,20 +92,42 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         <label for="profileImg">profiel foto</label>
         <input type="file" accept="image/*; capture=camera" name="profileImg" size="40">
         <input type="submit" name="submit" value="cre&euml;er account">
-      </form>
-      <?php #form handler
-      if (isset($_POST["submit"])) {
-        $profile_path = "defaultProfile.svg";
-        $toegangs_level = "user";
-        if ($_POST["department_id"] == false) {
-          $_POST["department_id"] = null;
+        <?php #form handler
+        if (isset($_POST["submit"])) {
+          //file upload
+
+          $uploadfile = "images/profiles/" . basename($_FILES["profileImg"]["name"]);
+          if ($_FILES["profileImg"]["size"] < 100000) {
+            if (move_uploaded_file($_FILES["profileImg"]["tmp_name"], $uploadfile)) {
+              $file_uploaded = true;
+              $profile_path = $_FILES["profileImg"]["name"];
+            }else {
+              if ($_FILES["profileImg"]["error"] == UPLOAD_ERR_NO_FILE) {
+                $profile_path = "defaultProfile.svg";
+              } else {
+                echo "<error>er ging iets fout met de afbeelding probeer het opnieuw of laat hem leeg voor een standaard afbeelding.</error>";
+              }
+            }
+          } else {
+            echo "<error>bestands groote is te groot, kies een bestand tussen de 0 en 0.1MB</error>";
+          }
+
+          $toegangs_level = "user";
+          $name = ucfirst($_POST["name"]);
+          if ($_POST["department_id"] == false) {
+            $_POST["department_id"] = null;
+          }
+          $sql = "INSERT INTO gebruikers(geslacht, voornaam, achternaam, afdelingen_id, intern_tel, email, configuraties_nummer, gebruikersnaam, wachtwoord, profile_path, toegangs_level)
+          VALUES('".$_POST["gender"]."', \"".$name."\",\"".$_POST["lastname"]."\", ".$_POST["department_id"].", ".$_POST["intern_tel"].", '".$_POST["email"]."', '".$_POST["pc_nummer"]."', '".$_POST["username"]."', '".hash("sha256", $_POST["password"])."', '".$profile_path."', '".$toegangs_level."')";
+          $insert = insertDataToDb("83.82.240.2", "user", "pass", "project", "gebruikers", $sql);
+          if ($insert === true) {
+            echo "<succes>account succesvol aangemaakt <a href='index.php'>login</a></succes><meta http-equiv=\"refresh\" content=\"2; url=index.php\" />";
+          } else {
+            echo "<error>gebruikersnaam al in gebruik</error>";
+          }
         }
-        insertDataToDb("83.82.240.2", "user", "pass", "project", "
-        INSERT INTO gebruikers(voornaam, achternaam, afdelingen_id, intern_tel, email, configuraties_nummer, gebruikersnaam, wachtwoord, profile_path, toegangs_level)
-        VALUES('".$_POST["name"]."','".$_POST["lastname"]."', ".$_POST["department_id"].", ".$_POST["intern_tel"].", '".$_POST["email"]."', '".$_POST["pc_nummer"]."',
-         '".$_POST["username"]."', '".hash("sha256", $_POST["password"])."', '".$profile_path."', '".$toegangs_level."')");
-      }
-      ?>
+        ?>
+      </form>
     </main>
     <script src="javascript/nav.js" charset="utf-8"></script>
   </body>

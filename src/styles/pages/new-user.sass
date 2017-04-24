@@ -1,6 +1,22 @@
 .new-user
+  background-image: url("../images/new-user.jpg")
+  background-size: cover
+  background-position: center
+  background-repeat: no-repeat
+  text-align: center
   form
-    text-align: center
+    background: $primary
+    display: inline-block
+    padding: 2em 3em
+    border-radius: 1em
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.6)
+    font-size: 0.7rem
+    // position: absolute
+    // top: 50%
+    // left: 50%
+    // transform: translate(-50%, -50%)
+    @media only screen and (min-width: 678px)
+      font-size: 1rem
     select, input
       display: block
       margin: 1em auto
