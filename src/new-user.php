@@ -66,15 +66,13 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     </header>
     <main class="new-user">
       <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-        <label for="name">naam</label>
-        <input required type="text" name="name" value=""><br>
-        <label for="lastname">achternaam</label>
-        <input required type="text" name="lastname" value=""><br>
+        <input required type="text" name="name" value="" placeholder="naam"><br>
+        <input required type="text" name="lastname" value="" placeholder="achternaam"><br>
         <label for="gender">geslacht</label>
-        m<input required type="radio" name="gender" value="m" checked="true">
-        v<input required type="radio" name="gender" value="v"><br>
-        <label for="department_id">afdeling</label>
+        <label for="gender">m</label><input required type="radio" name="gender" value="m" checked="true">
+        <label for="gender">v</label><input required type="radio" name="gender" value="v"><br>
         <select required name="department_id">
+          <option value="false">afdeling</option>
           <?php
           $afdelingen = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM afdelingen");
           foreach ($afdelingen as $key => $value) {
@@ -82,12 +80,9 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           }
           ?>
         </select><br>
-        <label for="email">email</label>
-        <input required type="email" name="email" value=""><br>
-        <label for="gebruikersnaam">gebruikersnaam</label>
-        <input required type="text" name="username" value=""><br>
-        <label for="password">wachtwoord</label>
-        <input required type="password" name="password" value=""><br>
+        <input required type="email" name="email" value="" placeholder="email"><br>
+        <input required type="text" name="username" value="" placeholder="gebruikersnaam"><br>
+        <input required type="password" name="password" value="" placeholder="wachtwoord"><br>
         <input type="submit" name="submit" value="cre&euml;er account">
       </form>
     </main>
