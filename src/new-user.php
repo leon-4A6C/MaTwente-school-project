@@ -69,9 +69,9 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
         <input required type="text" name="name" value="" placeholder="naam">
         <input required type="text" name="lastname" value="" placeholder="achternaam">
-        <label for="gender">geslacht</label>
-        <label for="gender">m</label><input required type="radio" name="gender" value="m" checked="true">
-        <label for="gender">v</label><input required type="radio" name="gender" value="v">
+        <label for="gender">geslacht</label><br>
+        <label for="male">m</label><input id="male" required type="radio" name="gender" value="m" checked="true">
+        <label for="female">v</label><input id="female" required type="radio" name="gender" value="v">
         <select required name="department_id">
           <option value="false">afdeling</option>
           <?php
