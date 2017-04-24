@@ -8,9 +8,9 @@ updateItems();
 
 // toggles the menu
 document.getElementsByClassName("navArrow")[0].addEventListener("click", function(e) {
-  if (document.getElementsByClassName("logo")[0].style.display === "none") {
+  if (document.getElementsByClassName("logo")[0].style.display == "none") {
     document.getElementsByClassName("logo")[0].style.display = "initial";
-  } else if(document.getElementsByClassName("logo")[0].style.display === "initial") {
+  } else if(document.getElementsByClassName("logo")[0].style.display == "initial") {
     setTimeout(logo, 300);
     function logo() {
       document.getElementsByClassName("logo")[0].style.display = "none";
