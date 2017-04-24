@@ -19,26 +19,24 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
   <body>
     <header>
       <div class="profileBar">
-        <div class="profile">
-          <a href="#">
-            <?php echo "<img src=\"images/profiles/".$_SESSION["profileImg"]."\" alt=\"profile\" class=\"profilePicture\">";?>
-          </a>
-          <ul>
-            <li>
-              <?php echo "<a href='$thisPage?logout=true'>logout</a>"; ?>
-              <?php if (isset($_GET["logout"])) {
-                logout();
-              } ?>
-            </li>
-            <li>
-              <a href="#">settings</a>
-            </li>
-          </ul>
-        </div>
-        <div class="status">
-          <span><?php echo $_SESSION["name"]; ?></span><br>
-          <?php echo "<a href='$thisPage?logout=true'>logout</a>"; ?>
-        </div>
+        <?php
+        if (empty($_SESSION["name"])) {
+          echo "<div class='profile'>";
+          echo "<a href='index.php'>login</a></div>";
+        } else {
+          echo "<div class='profile'><a href=''#'>";
+          echo "<img src=\"images/profiles/".$_SESSION["profileImg"]."\" alt=\"profile\" class=\"profilePicture\">";
+          echo "</a><ul><li>";
+          echo "<a href='$thisPage?logout=true'>logout</a>";
+          echo "</li><li><a href='#'>settings</a></li></ul></div>";
+          echo "<div class='status'><span>".$_SESSION["name"]."</span><br>
+          <a href='$thisPage?logout=true'>logout</a></div>";
+        }
+        ?>
+        <?php if (isset($_GET["logout"])) {
+          logout();
+        } ?>
+
       </div>
       <img src="images/icon.svg" alt="logo" class="logo logoGone" style="display: none">
       <nav class="navClosed">
