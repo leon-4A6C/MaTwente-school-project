@@ -5,14 +5,15 @@
     <title>user</title>
     <link rel="stylesheet" href="styles/main.css">
   </head>
-  <body class="login">
-    <form name="form" action="" method="post">
-      <input required type="text" name="username" placeholder="username" value="">
-      <input required type="password" name="password" placeholder="password" value="">
-      <input type="submit" name="Lsubmit" value="login">
-      <input type="submit" name="Csubmit" value="create account">
-    </form>
-    <?php
+  <body>
+    <main class="login">
+      <form name="form" action="" method="post">
+        <input required type="text" name="username" placeholder="username" value="">
+        <input required type="password" name="password" placeholder="password" value="">
+        <input type="submit" name="Lsubmit" value="login">
+        <input type="submit" name="Csubmit" value="create account">
+      </form>
+      <?php
       $pass = hash("sha256", $_POST['password']);
       if ($_POST['username'] != "") {
         $username = $_POST['username'];
@@ -51,6 +52,7 @@
         }
         $conn->close();
       }
-    ?>
+      ?>
+    </main>
   </body>
 </html>

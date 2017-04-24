@@ -42,6 +42,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       <nav class="navClosed">
         <ul>
           <?php
+          if (!empty($_SESSION["user_type"])) {
             $menuItemsFile = fopen("menuItems.json", "r") or die("unable to open menuItems.json");
             $menuItems = json_decode(fread($menuItemsFile, filesize("menuItems.json")), true);
             fclose($menuItemsFile);
@@ -58,10 +59,15 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
               }
               echo "</li>";
             }
+          }
           ?>
         </ul>
       </nav>
-      <img class="navArrow navArrowOpen" src="images/leftArrow.svg" alt="leftArrow">
+      <?php
+      if (!empty($_SESSION["name"])) {
+        echo '<img class="navArrow navArrowOpen" src="images/leftArrow.svg" alt="leftArrow">';
+      }
+      ?>
     </header>
     <main>
 
