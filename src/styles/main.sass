@@ -8,10 +8,6 @@ a
   text-decoration: none
   color: black
 
-
-leftArrow
-  @include triangle(3em, $secundary, left)
-
 header
   font-family: $quicksand
   z-index: 100
@@ -97,9 +93,8 @@ header
     color: $primary
     width: 10em
     z-index: 99
-    min-height: calc(100vh - 4em)
-    margin-top: 4em
-    padding-top: 4em
+    min-height: 100vh
+    padding-top: 8em
     overflow-x: hidden
     transition: width 300ms
     ul
@@ -164,6 +159,10 @@ input[type=submit]:disabled, button:disabled
 input:active, input:focus, select:focus, select:active, textarea:focus, textarea:active
   outline: none
   border: 0.1em solid rgb(100, 125, 175)
+
+input:invalid
+  box-shadow: none
+  border: 0.1em solid rgb(225, 100, 100)
 
 input:focus::-moz-placeholder, textarea:focus::-webkit-input-placeholder
   color: $nav
