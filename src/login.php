@@ -16,10 +16,10 @@
       $pass = hash("sha256", $_POST['password']);
       if ($_POST['username'] != "") {
         $username = $_POST['username'];
-        $servername = "localhost";
-        $DBusername = "leonidh203_userTest";
-        $DBpassword = "Y9z1aetZge";
-        $DBname = "leonidh203_loginTest";
+        $servername = "83.82.240.2";
+        $DBusername = "user";
+        $DBpassword = "pass";
+        $DBname = "gebruikers";
 
         // Create connection
         $conn = new mysqli($servername, $DBusername, $DBpassword, $DBname);
@@ -29,15 +29,7 @@
           die("Connection failed: " . $conn->connect_error . "<br>");
         }
         //echo "Connected successfully<br>";
-        if (isset($_POST['Csubmit'])) {
-          // Create user
-          $sql = "INSERT INTO users (username, pwd) VALUES('". $username ."', '". $pass ."');";
-          if ($conn->query($sql) === TRUE) {
-            echo "user created successfully<br>";
-          } else {
-            echo "username already in use";
-          }
-        }
+
         if (isset($_POST['Lsubmit'])) {
           // login
           //echo "login button<br>";
