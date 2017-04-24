@@ -20,7 +20,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     <header>
       <div class="profileBar">
         <?php
-        if (empty($_SESSION["name"]) || $_SESSION["name"]) {
+        if (empty($_SESSION["name"]) || !$_SESSION["name"]) {
           echo "<div class='profile'>";
           echo "<a href='index.php'>login</a></div>";
         } else {
