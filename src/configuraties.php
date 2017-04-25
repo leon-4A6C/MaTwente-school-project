@@ -3,8 +3,37 @@
 $_SESSION["user_type"] = "user";
 $_SESSION["profileImg"] = "defaultProfile.svg";
 $_SESSION["name"] = "John Doe";
+$_SESSION["username"] = "VDelen";
+$request_uri = substr($_SERVER["REQUEST_URI"], 1);
+// load menuItems.json
+$menuItemsFile = fopen("menuItems.json", "r") or die("unable to open menuItems.json");
+$menuItems = json_decode(fread($menuItemsFile, filesize("menuItems.json")), true);
+fclose($menuItemsFile);
+
+// security if user doesn't have permission to visit this page the page doesn't load
+foreach ($menuItems as $key => $value) {
+  foreach ($value as $key => $value) {
+    if ($key != "menuItem") {
+      foreach ($value["menuItems"] as $key => $value) {
+        if ($value["path"] == $request_uri) {
+          $found = false;
+          foreach ($value["type"] as $key => $value) {
+            if ($value == $_SESSION["user_type"]) {
+              $found = true;
+            }
+          }
+          if (!$found) {
+            die();
+          }
+        }
+      }
+    }
+  }
+}
+// load functions.php
 include "functions.php";
-$thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+// the webpage url(needed for logout)
+$thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/$request_uri";
 ?>
 <!DOCTYPE html>
 <html>
@@ -43,21 +72,30 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         <ul>
           <?php
           if (!empty($_SESSION["user_type"])) {
-            $menuItemsFile = fopen("menuItems.json", "r") or die("unable to open menuItems.json");
-            $menuItems = json_decode(fread($menuItemsFile, filesize("menuItems.json")), true);
-            fclose($menuItemsFile);
             foreach ($menuItems as $key => $value) {
-              echo "<li>";
-              foreach ($value as $key => $value) {
-                echo "<a href='#'>$key</a><ul>";
+              if ($value["menuItem"]) {
+                echo "<li>";
                 foreach ($value as $key => $value) {
-                  if ($_SESSION["user_type"] === $value["type"] || $_SESSION["user_type"] === "admin") {
-                    echo "<li><a href='".$value["path"]."'>".$value["title"]."</a><li>";
+                  if ($key != "menuItem") {
+                    echo "<a href='#'>$key</a><ul>";
+                    foreach ($value as $key => $value) {
+                      foreach ($value as $key => $value) {
+                        $found = false;
+                        foreach ($value["type"] as $key => $valueType) {
+                          if ($valueType == $_SESSION["user_type"]) {
+                            $found = true;
+                          }
+                        }
+                        if ($found == true) {
+                          echo "<li><a href='".$value["path"]."'>".$value["title"]."</a><li>";
+                        }
+                      }
+                    }
+                    echo "</ul>";
                   }
                 }
-                echo "</ul>";
+                echo "</li>";
               }
-              echo "</li>";
             }
           }
           ?>
@@ -69,7 +107,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       }
       ?>
     </header>
-    <main class="configuraties">
+    <main class="PUT FILE NAME HERE">
 
     </main>
     <script src="javascript/nav.js" charset="utf-8"></script>

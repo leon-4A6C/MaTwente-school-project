@@ -1,53 +1,100 @@
 [
   {
-    "medewerkers": [
-      {
-        "title": "overzicht",
-        "path": "medewerkers-overzicht.php",
-        "type": "user"
-      }
-    ]
+    "medewerkers": {
+      "menuItems":
+      [
+        {
+          "title": "overzicht",
+          "path": "medewerkers-overzicht.php",
+          "type": ["user", "admin"]
+        },
+        {
+          "title": "aanmaken",
+          "path": "new-user.php",
+          "type": ["admin"]
+        }
+      ]
+    },
+    "menuItem": true
   },
   {
-    "configuraties": [
-      {
-        "title": "overzicht",
-        "path": "configuraties-overzicht.php",
-        "type": "user"
-      },
-      {
-        "title": "toevoegen",
-        "path": "configuraties-toevoegen.php",
-        "type": "user"
-      }
-    ]
+    "configuraties": {
+      "menuItems":
+      [
+        {
+          "title": "overzicht",
+          "path": "configuraties-overzicht.php",
+          "type": ["user", "admin"]
+        },
+        {
+          "title": "toevoegen",
+          "path": "configuraties-toevoegen.php",
+          "type": ["user", "admin"]
+        }
+      ]
+    },
+    "menuItem": true
   },
   {
-    "apparaten": [
-      {
-        "title": "overzicht",
-        "path": "apparaten-overzicht.php",
-        "type": "user"
-      },
-      {
-        "title": "toevoegen",
-        "path": "apparaten-overzicht.php",
-        "type": "admin"
-      }
-    ]
+    "apparaten": {
+      "menuItems":
+      [
+        {
+          "title": "overzicht",
+          "path": "apparaten-overzicht.php",
+          "type": ["user", "admin"]
+        },
+        {
+          "title": "toevoegen",
+          "path": "apparaten-overzicht.php",
+          "type": ["admin"]
+        }
+      ]
+    },
+    "menuItem": true
   },
   {
-    "meldingen": [
-      {
-        "title": "overzicht",
-        "path": "meldingen-overzicht.php",
-        "type": "user"
-      },
-      {
-        "title": "toevoegen",
-        "path": "meldingen-toevoegen.php",
-        "type": "user"
-      }
-    ]
+    "meldingen": {
+      "menuItems":
+      [
+        {
+          "title": "overzicht",
+          "path": "meldingen-overzicht.php",
+          "type": ["user", "admin"]
+        },
+        {
+          "title": "toevoegen",
+          "path": "meldingen-toevoegen.php",
+          "type": ["user", "admin"]
+        }
+      ]
+    },
+    "menuItem": true
+  },
+  {
+    "template": {
+      "menuItems":
+      [
+        {
+          "title": "template",
+          "path": "template.php",
+          "type": ["user", "admin"]
+        }
+      ]
+    },
+    "menuItem": false
+  },
+  {
+    "user-settings": {
+      "menuItems":
+      [
+        {
+          "title": "user-settings",
+          "path": "user-settings.php",
+          "type": ["user", "admin"]
+        }
+      ]
+    },
+    "menuItem": false
   }
 ]
