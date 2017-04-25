@@ -11,7 +11,7 @@
         {
           "title": "aanmaken",
           "path": "new-user.php",
-          "type": ["admin"]
+          "type": ["admin", null]
         }
       ]
     },

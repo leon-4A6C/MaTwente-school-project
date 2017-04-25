@@ -1,9 +1,5 @@
 <?php session_start(); ?>
 <?php
-$_SESSION["user_type"] = "user";
-$_SESSION["profileImg"] = "defaultProfile.svg";
-$_SESSION["name"] = "John Doe";
-$_SESSION["username"] = "VDelen";
 $request_uri = substr($_SERVER["REQUEST_URI"], 1);
 // load menuItems.json
 $menuItemsFile = fopen("menuItems.json", "r") or die("unable to open menuItems.json");
