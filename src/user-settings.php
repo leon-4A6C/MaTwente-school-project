@@ -192,7 +192,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           gebruikersnaam = '".$_POST["username"]."',
           wachtwoord = '".hash("sha256", $_POST["password"])."',
           profile_path = '$profile_path',
-          toegangs_level = '$toegangs_level'";
+          toegangs_level = '$toegangs_level' WHERE id = $id";
           $insert = dataToDb("83.82.240.2", "user", "pass", "project", "gebruikers", $sql);
           if ($insert === true) {
             if ($_SESSION["user_type"] == admin) {

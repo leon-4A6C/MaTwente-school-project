@@ -5,7 +5,7 @@
       [
         {
           "title": "overzicht",
-          "path": "medewerkers-overzicht.php",
+          "path": "user-overview.php",
           "type": ["user", "admin"]
         },
         {
