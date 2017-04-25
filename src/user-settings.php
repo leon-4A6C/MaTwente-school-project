@@ -137,14 +137,16 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         <input type="number" min="100" max="999" name="intern_tel" value="" placeholder="intern telefoonnummer">
         <input required type="email" name="email" value="" placeholder="email">
         <input required type="text" name="username" value="" placeholder="gebruikersnaam">
+        <label for="password">als je hem leeg laat word hij niet gewijzigd</label>
         <input required type="password" name="password" value="" placeholder="wachtwoord">
         <label for="profileImg">profiel foto</label>
         <input type="file" accept="image/*; capture=camera" name="profileImg" size="40">
         <?php
-        if ($_SESSION["toegangs_level"] == "admin") {
-          echo "<input type='text' name='toegangs_level' placeholder='toegansg level'>";
+        if ($_SESSION["user_type"] == "admin") {
+          echo "<input type='text' name='toegangs_level' placeholder='toegangs level'>";
         }
         ?>
+        <input required type="password" name="comfirmPass" value="" placeholder="bevestiging wachtwoord">
         <input type="submit" name="submit" value="wijzig account">
         <?php #form handler
         if (isset($_POST["submit"])) {
@@ -165,8 +167,16 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           } else {
             echo "<error>bestandsgrootte is te groot, kies een bestand tussen de 0 en 0.3MB</error>";
           }
-
-          $toegangs_level = "user";
+          if (!$_POST["toegangs_level"]) {
+            $toegangs_level = "user";
+          } else {
+            $toegangs_level = $_POST["toegangs_level"];
+          }
+          // TODO: check eerst of het wachtwoord wel klopt in de DB
+          $oud_wachtwoord = $_POST["confirmPass"];
+          if (!$_POST["password"]) {
+            $nieuw_wachtwoord = $oud_wachtwoord;
+          }
           $name = ucfirst($_POST["name"]);
           if ($_POST["department_id"] == false) {
             $_POST["department_id"] = null;
@@ -185,7 +195,11 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           toegangs_level = '$toegangs_level'";
           $insert = dataToDb("83.82.240.2", "user", "pass", "project", "gebruikers", $sql);
           if ($insert === true) {
-            echo "<succes>account succesvol gewijzigd <a href='index.php'>login</a></succes><meta http-equiv=\"refresh\" content=\"2; url=index.php\" />";
+            if ($_SESSION["user_type"] == admin) {
+              echo "<succes>account succesvol gewijzigd <a href='configuraties.php'>login</a></succes><meta http-equiv=\"refresh\" content=\"2; url=index.php\" />";
+            } else {
+              echo "<succes>account succesvol gewijzigd <a href='index.php'>login</a></succes><meta http-equiv=\"refresh\" content=\"2; url=index.php\" />";
+            }
           } else {
             echo "<error>gebruikersnaam al in gebruik</error>";
           }
