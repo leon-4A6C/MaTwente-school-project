@@ -105,12 +105,12 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     </header>
     <main class="new-user">
       <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
-        <input required type="text" name="name" value="" placeholder="naam">
-        <input required type="text" name="lastname" value="" placeholder="achternaam">
+        <input class="inputs" required type="text" name="name" value="" placeholder="naam">
+        <input class="inputs" required type="text" name="lastname" value="" placeholder="achternaam">
         <label for="gender">geslacht</label><br>
         <label for="male">m </label><input id="male" required type="radio" name="gender" value="m" checked="true">&nbsp;&nbsp;&nbsp;
         <label for="female">v </label><input id="female" required type="radio" name="gender" value="v">
-        <select required name="department_id">
+        <select class="inputs" name="department_id">
           <option value="false">afdeling</option>
           <?php
           $afdelingen = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM afdelingen");
@@ -119,7 +119,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           }
           ?>
         </select>
-        <select required name="pc_nummer">
+        <select class="inputs" name="pc_nummer">
           <option value="false">configuratie</option>
           <?php
           $configuraties = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT pc_nummer FROM configuraties");
@@ -128,9 +128,9 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           }
           ?>
         </select>
-        <input type="number" min="100" max="999" name="intern_tel" value="" placeholder="intern telefoonnummer">
-        <input required type="email" name="email" value="" placeholder="email">
-        <input required type="text" name="username" value="" placeholder="gebruikersnaam">
+        <input class="inputs" type="number" min="100" max="999" name="intern_tel" value="" placeholder="intern telefoonnummer">
+        <input class="inputs" required type="email" name="email" value="" placeholder="email">
+        <input class="inputs" required type="text" name="username" value="" placeholder="gebruikersnaam">
         <input required type="password" name="password" value="" placeholder="wachtwoord">
         <label for="profileImg">profiel foto</label>
         <input type="file" accept="image/*; capture=camera" name="profileImg" size="40">
@@ -148,30 +148,33 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
               if ($_FILES["profileImg"]["error"] == UPLOAD_ERR_NO_FILE) {
                 $profile_path = "defaultProfile.svg";
               } else {
-                echo "<error>er ging iets fout met de afbeelding probeer het opnieuw of laat hem leeg voor een standaard afbeelding.</error>";
+                echo "<meta http-equiv=\"refresh\" content=\"0; url=$thisPage?error=er ging iets fout met de afbeelding probeer het opnieuw of laat hem leeg voor een standaard afbeelding.&name=$_POST[name]&lastname=$_POST[lastname]&gender=$_POST[gender]&department_id=$_POST[department_id]&pc_nummer=$_POST[pc_nummer]&intern_tel=$_POST[intern_tel]&email=$_POST[email]&username=$_POST[username]\" />";
               }
             }
+            $upload = true;
           } else {
-            echo "<error>bestandsgrootte is te groot, kies een bestand tussen de 0 en 0.3MB</error>";
+            echo "<meta http-equiv=\"refresh\" content=\"0; url=$thisPage?error=bestandsgrootte is te groot, kies een bestand tussen de 0 en 0.3MB&name=$_POST[name]&lastname=$_POST[lastname]&gender=$_POST[gender]&department_id=$_POST[department_id]&pc_nummer=$_POST[pc_nummer]&intern_tel=$_POST[intern_tel]&email=$_POST[email]&username=$_POST[username]\" />";
           }
-
-          $toegangs_level = "user";
-          $name = ucfirst($_POST["name"]);
-          if ($_POST["department_id"] == false) {
-            $_POST["department_id"] = null;
-          }
-          $sql = "INSERT INTO gebruikers(geslacht, voornaam, achternaam, afdelingen_id, intern_tel, email, configuraties_nummer, gebruikersnaam, wachtwoord, profile_path, toegangs_level)
-          VALUES('".$_POST["gender"]."', \"".$name."\",\"".$_POST["lastname"]."\", ".$_POST["department_id"].", ".$_POST["intern_tel"].", '".$_POST["email"]."', '".$_POST["pc_nummer"]."', '".$_POST["username"]."', '".hash("sha256", $_POST["password"])."', '".$profile_path."', '".$toegangs_level."')";
-          $insert = dataToDb("83.82.240.2", "user", "pass", "project", "gebruikers", $sql);
-          if ($insert === true) {
-            echo "<succes>account succesvol aangemaakt <a href='index.php'>login</a></succes><meta http-equiv=\"refresh\" content=\"2; url=index.php\" />";
-          } else {
-            echo "<error>gebruikersnaam al in gebruik</error>";
+          if ($upload) {
+            $toegangs_level = "user";
+            $name = ucfirst($_POST["name"]);
+            if ($_POST["department_id"] == false) {
+              $_POST["department_id"] = null;
+            }
+            $sql = "INSERT INTO gebruikers(geslacht, voornaam, achternaam, afdelingen_id, intern_tel, email, configuraties_nummer, gebruikersnaam, wachtwoord, profile_path, toegangs_level)
+            VALUES('".$_POST["gender"]."', \"".$name."\",\"".$_POST["lastname"]."\", ".$_POST["department_id"].", ".$_POST["intern_tel"].", '".$_POST["email"]."', '".$_POST["pc_nummer"]."', '".$_POST["username"]."', '".hash("sha256", $_POST["password"])."', '".$profile_path."', '".$toegangs_level."')";
+            $insert = dataToDb("83.82.240.2", "user", "pass", "project", "gebruikers", $sql);
+            if ($insert === true) {
+              echo "<succes>account succesvol aangemaakt <a href='index.php'>login</a></succes><meta http-equiv=\"refresh\" content=\"2; url=index.php\" />";
+            } else {
+              echo "<meta http-equiv=\"refresh\" content=\"0; url=$thisPage?error=gebruikersnaam al in gebruik&name=$_POST[name]&lastname=$_POST[lastname]&gender=$_POST[gender]&department_id=$_POST[department_id]&pc_nummer=$_POST[pc_nummer]&intern_tel=$_POST[intern_tel]&email=$_POST[email]&username=$_POST[username]\" />";
+            }
           }
         }
         ?>
       </form>
     </main>
+    <script src="javascript/new-user.js" charset="utf-8"></script>
     <script src="javascript/nav.js" charset="utf-8"></script>
   </body>
 </html>

@@ -138,7 +138,7 @@ header
 
 main
   position: relative
-  padding: 4em 1.75em
+  padding: 4em 2em
   box-sizing: border-box
 
 input[type= text], input[type= submit], input[type= email], input[type= password], select, textarea, input[type= number]
@@ -188,24 +188,22 @@ input:focus:-ms-input-placeholder, textarea:focus::-webkit-input-placeholder
   color: $nav
   caret-color: $profileBar
 
-error
+succes, error
   display: inline-block
-  margin: 0 auto
-  border: 0.2em solid rgb(255, 50, 50)
-  color: rgb(255, 50, 50)
-  font-family: $quicksand
-  font-weight: 600
-  padding: 1em
-  border-radius: 1em
-succes
-  display: inline-block
-  margin: 0 auto
   border: 0.2em solid rgb(50, 255, 50)
   color: rgb(50, 255, 50)
   font-family: $quicksand
   font-weight: 600
   padding: 1em
   border-radius: 1em
+  position: absolute
+  top: 0.25em
+  left: 50%
+  transform: translateX(-50%)
   a
     &:hover
       text-decoration: underline
+
+error
+  border: 0.2em solid rgb(255, 50, 50)
+  color: rgb(255, 50, 50)

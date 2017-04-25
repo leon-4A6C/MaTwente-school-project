@@ -39,6 +39,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     <title>MA Twente</title>
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet"> 
     <link rel="stylesheet" href="styles/main.css">
   </head>
   <body>
@@ -105,7 +106,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     </header>
     <main class="user-overview">
       <?php
-      echo twoDimenTable(sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT gebruikersnaam, geslacht, voornaam, achternaam, intern_tel, email, configuraties_nummer, afdelingen.naam AS 'afdeling' FROM gebruikers INNER JOIN afdelingen ON afdelingen_id = afdelingen.id"));
+      echo twoDimenTable(sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling' FROM gebruikers INNER JOIN afdelingen ON afdelingen_id = afdelingen.id"));
       ?>
     </main>
     <script src="javascript/nav.js" charset="utf-8"></script>
