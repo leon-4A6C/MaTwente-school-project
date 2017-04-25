@@ -28,7 +28,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           echo "<img src=\"images/profiles/".$_SESSION["profileImg"]."\" alt=\"profile\" class=\"profilePicture\">";
           echo "</a><ul><li>";
           echo "<a href='$thisPage?logout=true'>logout</a>";
-          echo "</li><li><a href='#'>settings</a></li></ul></div>";
+          echo "</li><li><a href='user-settings.php'>settings</a></li></ul></div>";
           echo "<div class='status'><span>".$_SESSION["name"]."</span><br>
           <a href='$thisPage?logout=true'>logout</a></div>";
         }

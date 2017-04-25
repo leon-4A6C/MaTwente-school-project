@@ -68,6 +68,8 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     </header>
     <main class="new-user">
       <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
+        <?php // TODO: insert mysql user data ?>
+        <?php // TODO: if no user info session data then get user info from login ?>
         <input required type="text" name="name" value="" placeholder="naam">
         <input required type="text" name="lastname" value="" placeholder="achternaam">
         <label for="gender">geslacht</label><br>
@@ -97,7 +99,12 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         <input required type="password" name="password" value="" placeholder="wachtwoord">
         <label for="profileImg">profiel foto</label>
         <input type="file" accept="image/*; capture=camera" name="profileImg" size="40">
-        <input type="submit" name="submit" value="cre&euml;er account">
+        <?php
+          if ($_SESSION["toegangs_level"] == "admin") {
+            echo "<input type='text' name='toegangs_level' placeholder='toegansg level'>";
+          }
+        ?>
+        <input type="submit" name="submit" value="wijzig account">
         <?php #form handler
         if (isset($_POST["submit"])) {
           //file upload
@@ -123,11 +130,21 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           if ($_POST["department_id"] == false) {
             $_POST["department_id"] = null;
           }
-          $sql = "INSERT INTO gebruikers(geslacht, voornaam, achternaam, afdelingen_id, intern_tel, email, configuraties_nummer, gebruikersnaam, wachtwoord, profile_path, toegangs_level)
-          VALUES('".$_POST["gender"]."', \"".$name."\",\"".$_POST["lastname"]."\", ".$_POST["department_id"].", ".$_POST["intern_tel"].", '".$_POST["email"]."', '".$_POST["pc_nummer"]."', '".$_POST["username"]."', '".hash("sha256", $_POST["password"])."', '".$profile_path."', '".$toegangs_level."')";
+          $sql = "UPDATE gebruikers
+          SET voornaam = '".$_POST["name"]."',
+          achternaam = '".$_POST["lastname"]."',
+          geslacht = '".$_POST["gender"]."',
+          afdelingen_id = ".$_POST["department_id"].",
+          configuraties_nummer = '".$_POST["pc_nummer"]."',
+          intern_tel = ".$_POST["intern_tel"].",
+          email = '".$_POST["email"]."',
+          gebruikersnaam = '".$_POST["username"]."',
+          wachtwoord = '".hash("sha256", $_POST["password"])."',
+          profile_path = '$profile_path',
+          toegangs_level = '$toegangs_level'";
           $insert = dataToDb("83.82.240.2", "user", "pass", "project", "gebruikers", $sql);
           if ($insert === true) {
-            echo "<succes>account succesvol aangemaakt <a href='index.php'>login</a></succes><meta http-equiv=\"refresh\" content=\"2; url=index.php\" />";
+            echo "<succes>account succesvol gewijzigd <a href='index.php'>login</a></succes><meta http-equiv=\"refresh\" content=\"2; url=index.php\" />";
           } else {
             echo "<error>gebruikersnaam al in gebruik</error>";
           }

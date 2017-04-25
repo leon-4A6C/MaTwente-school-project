@@ -38,7 +38,7 @@ function twoDimenTable($array) {
   return $table;
 }
 
-function insertDataToDb($servername, $username, $password, $dbname, $tableName, $sql) {
+function dataToDb($servername, $username, $password, $dbname, $tableName, $sql) {
 
   $conn = new mysqli($servername, $username, $password, $dbname);
 
