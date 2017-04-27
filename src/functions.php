@@ -51,7 +51,7 @@ function dataToDb($servername, $username, $password, $dbname, $tableName, $sql) 
   if ($conn->query($sql) === TRUE) {
     return true;
   } else {
-    return $conn->error;
+    return "$sql : ".$conn->error;
   }
 }
 

@@ -1,5 +1,21 @@
 <?php session_start(); ?>
 <?php
+
+// dit moet vervangen worden door het login ding
+// neppe data om in te loggen
+// $_SESSION["user"]["toegangs_level"] = "admin";
+// $_SESSION["user"]["profile_path"] = "defaultProfile.svg";
+// $_SESSION["user"]["voornaam"] = "John";
+// $_SESSION["user"]["achternaam"] = "Doe";
+// $_SESSION["user"]["gebruikersnaam"] = "JohnDoe";
+// $_SESSION["user"]["wachtwoord"] = hash("sha256", "Welkom123");
+// $_SESSION["user"]["id"] = 95;
+// $_SESSION["user"]["geslacht"] = "m";
+// $_SESSION["user"]["afdelingen_id"] = 6;
+// $_SESSION["user"]["intern_tel"] = 123;
+// $_SESSION["user"]["email"] = "example@example.com";
+// $_SESSION["user"]["configuraties_nummer"] = "20-182";
+// $_SESSION["user"]["naam"] = $_SESSION["user"]["voornaam"] . " " . $_SESSION["user"]["achternaam"];
 $request_uri = substr($_SERVER["REQUEST_URI"], 1);
 // load menuItems.json
 $menuItemsFile = fopen("menuItems.json", "r") or die("unable to open menuItems.json");
@@ -14,12 +30,12 @@ foreach ($menuItems as $key => $value) {
         if ($value["path"] == $request_uri) {
           $found = false;
           foreach ($value["type"] as $key => $value) {
-            if ($value == $_SESSION["user_type"]) {
+            if ($value == $_SESSION["user"]["toegangs_level"]) {
               $found = true;
             }
           }
           if (!$found) {
-            die();
+            die("U heeft geen toestemming om hier te komen");
           }
         }
       }
@@ -46,16 +62,23 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     <header>
       <div class="profileBar">
         <?php
-        if (empty($_SESSION["name"]) || !$_SESSION["name"]) {
+        if (!$_SESSION["user"]["toegangs_level"]) {
           echo "<div class='profile'>";
           echo "<a href='index.php'>login</a></div>";
         } else {
           echo "<div class='profile'><a href=''#'>";
-          echo "<img src=\"images/profiles/".$_SESSION["profileImg"]."\" alt=\"profile\" class=\"profilePicture\">";
+          echo "<img src=\"images/profiles/".$_SESSION["user"]["profile_path"]."\" alt=\"profile\" class=\"profilePicture\">";
           echo "</a><ul><li>";
           echo "<a href='$thisPage?logout=true'>logout</a>";
-          echo "</li><li><a href='user-settings.php'>settings</a></li></ul></div>";
-          echo "<div class='status'><span>".$_SESSION["name"]."</span><br>
+          echo "</li><li>";
+          echo "<form id='user-settings' action='user-settings.php' method='post' style='display:none'>";
+          foreach ($_SESSION["user"] as $key => $value) {
+            echo "<input type='hidden' name='$key' value='$value'>";
+          }
+          echo "</form>";
+          echo "<a onclick='document.getElementById(\"user-settings\").submit();' href='#'>settings</a>";
+          echo "</li></ul></div>";
+          echo "<div class='status'><span>".$_SESSION["user"]["naam"]."</span><br>
           <a href='$thisPage?logout=true'>logout</a></div>";
         }
         ?>
@@ -68,7 +91,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       <nav class="navClosed">
         <ul>
           <?php
-          if (!empty($_SESSION["user_type"])) {
+          if (!empty($_SESSION["user"]["toegangs_level"])) {
             foreach ($menuItems as $key => $value) {
               if ($value["menuItem"]) {
                 echo "<li>";
@@ -79,7 +102,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
                       foreach ($value as $key => $value) {
                         $found = false;
                         foreach ($value["type"] as $key => $valueType) {
-                          if ($valueType == $_SESSION["user_type"]) {
+                          if ($valueType == $_SESSION["user"]["toegangs_level"]) {
                             $found = true;
                           }
                         }
@@ -99,117 +122,137 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         </ul>
       </nav>
       <?php
-      if (!empty($_SESSION["name"])) {
+      if (!empty($_SESSION["user"]["toegangs_level"])) {
         echo '<img class="navArrow navArrowOpen" src="images/leftArrow.svg" alt="leftArrow">';
       }
       ?>
     </header>
     <main class="new-user">
-      <?php echo $_POST["edit-afdelingen_id"]; ?>
       <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
-        <?php // TODO: insert mysql user data ?>
-        <?php // TODO: if no user info session data then get user info from login ?>
-        <input required type="text" name="name" value="<?php echo $_POST["edit-voornaam"]; ?>" placeholder="naam">
-        <input required type="text" name="lastname" value="<?php echo $_POST["edit-achternaam"]; ?>" placeholder="achternaam">
+        <input required type="text" name="voornaam" value="<?php echo $_POST["voornaam"]; ?>" placeholder="naam">
+        <input required type="text" name="achternaam" value="<?php echo $_POST["achternaam"]; ?>" placeholder="achternaam">
         <label for="gender">geslacht</label><br>
-        <label for="male">m </label><input id="male" required type="radio" name="gender" value="m" <?php if($_POST["edit-geslacht"]=="m"){echo "checked";} ?>>&nbsp;&nbsp;&nbsp;
-        <label for="female">v </label><input id="female" required type="radio" name="gender" value="v" <?php if($_POST["edit-geslacht"]=="v"){echo "checked";} ?>>
-        <select required name="department_id">
+        <label for="male">m </label><input id="male" required type="radio" name="geslacht" value="m" <?php if($_POST["geslacht"]=="m"){echo "checked";} ?>>&nbsp;&nbsp;&nbsp;
+        <label for="female">v </label><input id="female" required type="radio" name="geslacht" value="v" <?php if($_POST["geslacht"]=="v"){echo "checked";} ?>>
+        <select required name="afdelingen_id">
           <option value="false">afdeling</option>
           <?php
           $afdelingen = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM afdelingen");
           foreach ($afdelingen as $key => $value) {
             echo "<option ";
-            if ($_POST["edit-afdelingen_id"] == $value["id"]) {
+            if ($_POST["afdelingen_id"] == $value["id"]) {
               echo "selected";
             }
             echo " value='".$value["id"]."'>".$value["naam"]."</option>";
           }
           ?>
         </select>
-        <select required name="pc_nummer">
+        <select required name="configuraties_nummer">
           <option value="false">configuratie</option>
           <?php
           $configuraties = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT pc_nummer FROM configuraties");
           foreach ($configuraties as $key => $value) {
             echo "<option ";
-            if ($_POST["edit-configuraties_nummer"] == $value["pc_nummer"]) {
+            if ($_POST["configuraties_nummer"] == $value["pc_nummer"]) {
               echo "selected";
             }
             echo " value='".$value["pc_nummer"]."'>".$value["pc_nummer"]."</option>";
           }
           ?>
         </select>
-        <input type="number" min="100" max="999" name="intern_tel" value="<?php echo $_POST['edit-intern_tel']?>" placeholder="intern telefoonnummer">
-        <input required type="email" name="email" value="<?php echo $_POST['edit-email']?>" placeholder="email">
-        <input required type="text" name="username" value="<?php echo $_POST['edit-gebruikersnaam']?>" placeholder="gebruikersnaam">
-        <label for="password">als je hem leeg laat word hij niet gewijzigd</label>
-        <input required type="password" name="password" value="" placeholder="wachtwoord">
-        <label for="profileImg">profiel foto</label>
-        <input type="file" accept="image/*; capture=camera" name="profileImg" size="40">
+        <input type="number" min="100" max="999" name="intern_tel" value="<?php echo $_POST['intern_tel']?>" placeholder="intern telefoonnummer">
+        <input required type="email" name="email" value="<?php echo $_POST['email']?>" placeholder="email">
+        <input required type="text" name="gebruikersnaam" value="<?php echo $_POST['gebruikersnaam']?>" placeholder="gebruikersnaam">
+        <label for="wachtwoord">als je hem leeg laat word hij niet gewijzigd</label>
+        <input type="password" name="wachtwoord" value="" placeholder="wachtwoord">
+        <label for="profile_path">profiel foto</label>
+        <input type="file" accept="image/*; capture=camera" name="profile_path" size="40">
         <?php
-        if ($_SESSION["user_type"] == "admin") {
-          echo "<input type='text' name='toegangs_level' placeholder='toegangs level' value='".$_POST["edit-toegangs_level"]."'>";
+        if ($_SESSION["user"]["toegangs_level"] == "admin") {
+          echo "<input type='text' name='toegangs_level' placeholder='toegangs level' value='".$_POST["toegangs_level"]."'>";
         }
         ?>
-        <input required type="password" name="comfirmPass" value="" placeholder="bevestiging wachtwoord">
-        <input type="hidden" name="id" value="<?php echo $_POST['edit-id'] ?>">
+        <input required type="password" name="bevestegings_wachtwoord" value="" placeholder="bevestiging wachtwoord">
+        <input type="hidden" name="id" value="<?php echo $_POST['id']?>">
         <input type="submit" name="submit" value="wijzig account">
         <?php #form handler
         if (isset($_POST["submit"])) {
-          //file upload
 
-          $uploadfile = "images/profiles/" . basename($_FILES["profileImg"]["name"]);
-          if ($_FILES["profileImg"]["size"] < 300000) {
-            if (move_uploaded_file($_FILES["profileImg"]["tmp_name"], $uploadfile)) {
-              $file_uploaded = true;
-              $profile_path = $_FILES["profileImg"]["name"];
-            }else {
-              if ($_FILES["profileImg"]["error"] == UPLOAD_ERR_NO_FILE) {
-                $profile_path = "defaultProfile.svg";
-              } else {
-                echo "<error>er ging iets fout met de afbeelding probeer het opnieuw of laat hem leeg voor een standaard afbeelding.</error>";
+          $user_id_data = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM gebruikers WHERE id = ".$_POST["id"])[0];
+
+          // clean user input
+          $voornaam = ucfirst(trim($_POST["voornaam"]));
+          $achternaam = trim($_POST["achternaam"]);
+          $intern_tel = trim($_POST["intern_tel"]);
+          $email = trim($_POST["email"]);
+          $gebruikersnaam = trim($_POST["gebruikersnaam"]);
+          $wachtwoord = trim($_POST["wachtwoord"]);
+          $toegangs_level = trim($_POST["toegangs_level"]);
+          $bevestegings_wachtwoord = hash("sha256",trim($_POST["bevestegings_wachtwoord"]));
+
+          if ($_POST["afdelingen_id"] == false) {
+            $afdelingen_id = null;
+          } else {
+            $afdelingen_id = $_POST["afdelingen_id"];
+          }
+          if (!$toegangs_level) {
+            $toegangs_level = $_SESSION["user"]["toegangs_level"];
+          } else {
+            $toegangs_level = $_POST["toegangs_level"];
+          }
+
+          if (!$wachtwoord) {
+            $wachtwoord = $user_id_data["wachtwoord"];
+          } else {
+            $wachtwoord = hash("sha256", $wachtwoord);
+          }
+
+          // check of het wachtwoord overeen komt met de persoon die ingelogd is.
+          if ($bevestegings_wachtwoord == $_SESSION["user"]["wachtwoord"]) {
+            //file upload
+            $uploadfile = "images/profiles/" . basename($_FILES["profile_path"]["name"]);
+            if ($_FILES["profile_path"]["size"] < 300000) {
+              if (move_uploaded_file($_FILES["profile_path"]["tm`p_name"], $uploadfile)) {
+                $file_uploaded = true;
+                $profile_path = $_FILES["profile_path"]["name"];
+              }else {
+                if ($_FILES["profile_path"]["error"] == UPLOAD_ERR_NO_FILE) {
+                  $profile_path = "defaultProfile.svg";
+                } else {
+                  echo "<error>er ging iets fout met de afbeelding probeer het opnieuw of laat hem leeg voor een standaard afbeelding.</error>";
+                }
               }
-            }
-          } else {
-            echo "<error>bestandsgrootte is te groot, kies een bestand tussen de 0 en 0.3MB</error>";
-          }
-          if (!$_POST["toegangs_level"]) {
-            $toegangs_level = "user";
-          } else {
-            $toegangs_level = $_POST["user_type"];
-          }
-          // TODO: check eerst of het wachtwoord wel klopt in de DB
-          $oud_wachtwoord = $_POST["confirmPass"];
-          if (!$_POST["password"]) {
-            $nieuw_wachtwoord = $oud_wachtwoord;
-          }
-          $name = ucfirst($_POST["name"]);
-          if ($_POST["department_id"] == false) {
-            $_POST["department_id"] = null;
-          }
-          $sql = "UPDATE gebruikers
-          SET voornaam = '".$_POST["name"]."',
-          achternaam = '".$_POST["lastname"]."',
-          geslacht = '".$_POST["gender"]."',
-          afdelingen_id = ".$_POST["department_id"].",
-          configuraties_nummer = '".$_POST["pc_nummer"]."',
-          intern_tel = ".$_POST["intern_tel"].",
-          email = '".$_POST["email"]."',
-          gebruikersnaam = '".$_POST["username"]."',
-          wachtwoord = '".hash("sha256", $_POST["password"])."',
-          profile_path = '$profile_path',
-          toegangs_level = '$toegangs_level' WHERE id = ".$_POST["id"];
-          $insert = dataToDb("83.82.240.2", "user", "pass", "project", "gebruikers", $sql);
-          if ($insert === true) {
-            if ($_SESSION["user_type"] == "admin") {
-              echo "<succes>account succesvol gewijzigd</succes><meta http-equiv=\"refresh\" content=\"2; url=user-overview.php\" />";
             } else {
-              echo "<succes>account succesvol gewijzigd <a href='index.php'>login</a></succes><meta http-equiv=\"refresh\" content=\"2; url=index.php\" />";
+              echo "<error>bestandsgrootte is te groot, kies een bestand tussen de 0 en 0.3MB</error>";
+            }
+
+
+            $sql = "UPDATE gebruikers
+            SET voornaam = '".$voornaam."',
+            achternaam = \"$achternaam\",
+            geslacht = '".$_POST["geslacht"]."',
+            afdelingen_id = ".$afdelingen_id.",
+            configuraties_nummer = '".$_POST["configuraties_nummer"]."',
+            intern_tel = ".$intern_tel.",
+            email = '".$email."',
+            gebruikersnaam = '".$gebruikersnaam."',
+            wachtwoord = '".$wachtwoord."',
+            profile_path = '$profile_path',
+            toegangs_level = '$toegangs_level' WHERE id = ".$_POST["id"];
+            $insert = dataToDb("83.82.240.2", "user", "pass", "project", "gebruikers", $sql);
+            if ($insert === true) {
+              if ($_SESSION["user"]["toegangs_level"] == "admin") {
+                echo "<succes>account succesvol gewijzigd</succes><meta http-equiv=\"refresh\" content=\"2; url=user-overview.php\" />";
+              } else {
+                echo "<succes>account succesvol gewijzigd <a href='index.php'>login</a></succes><meta http-equiv=\"refresh\" content=\"2; url=index.php\" />";
+              }
+            } else {
+              echo "<error>gebruikersnaam al in gebruik</error>";
             }
           } else {
-            echo "<error>gebruikersnaam al in gebruik</error>";
+            echo "<error>verkeerd bevestegings wachtwoord ingevoerd</error>";
           }
+
         }
         ?>
       </form>

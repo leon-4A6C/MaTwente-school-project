@@ -1,9 +1,21 @@
 <?php session_start(); ?>
 <?php
-$_SESSION["user_type"] = "admin";
-$_SESSION["profileImg"] = "defaultProfile.svg";
-$_SESSION["name"] = "John Doe";
-$_SESSION["username"] = "VDelen";
+
+// dit moet vervangen worden door het login ding
+// neppe data om in te loggen
+$_SESSION["user"]["toegangs_level"] = "admin";
+$_SESSION["user"]["profile_path"] = "defaultProfile.svg";
+$_SESSION["user"]["voornaam"] = "John";
+$_SESSION["user"]["achternaam"] = "Doe";
+$_SESSION["user"]["gebruikersnaam"] = "JohnDoe";
+$_SESSION["user"]["wachtwoord"] = hash("sha256", "Welkom123");
+$_SESSION["user"]["id"] = 95;
+$_SESSION["user"]["geslacht"] = "m";
+$_SESSION["user"]["afdelingen_id"] = 6;
+$_SESSION["user"]["intern_tel"] = 123;
+$_SESSION["user"]["email"] = "example@example.com";
+$_SESSION["user"]["configuraties_nummer"] = "20-182";
+$_SESSION["user"]["naam"] = $_SESSION["user"]["voornaam"] . " " . $_SESSION["user"]["achternaam"];
 $request_uri = substr($_SERVER["REQUEST_URI"], 1);
 // load menuItems.json
 $menuItemsFile = fopen("menuItems.json", "r") or die("unable to open menuItems.json");
@@ -18,12 +30,12 @@ foreach ($menuItems as $key => $value) {
         if ($value["path"] == $request_uri) {
           $found = false;
           foreach ($value["type"] as $key => $value) {
-            if ($value == $_SESSION["user_type"]) {
+            if ($value == $_SESSION["user"]["toegangs_level"]) {
               $found = true;
             }
           }
           if (!$found) {
-            die();
+            die("U heeft geen toestemming om hier te komen");
           }
         }
       }
@@ -50,16 +62,23 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     <header>
       <div class="profileBar">
         <?php
-        if (empty($_SESSION["name"]) || !$_SESSION["name"]) {
+        if (!$_SESSION["user"]["toegangs_level"]) {
           echo "<div class='profile'>";
           echo "<a href='index.php'>login</a></div>";
         } else {
           echo "<div class='profile'><a href=''#'>";
-          echo "<img src=\"images/profiles/".$_SESSION["profileImg"]."\" alt=\"profile\" class=\"profilePicture\">";
+          echo "<img src=\"images/profiles/".$_SESSION["user"]["profile_path"]."\" alt=\"profile\" class=\"profilePicture\">";
           echo "</a><ul><li>";
           echo "<a href='$thisPage?logout=true'>logout</a>";
-          echo "</li><li><a href='user-settings.php'>settings</a></li></ul></div>";
-          echo "<div class='status'><span>".$_SESSION["name"]."</span><br>
+          echo "</li><li>";
+          echo "<form id='user-settings' action='user-settings.php' method='post' style='display:none'>";
+          foreach ($_SESSION["user"] as $key => $value) {
+            echo "<input type='hidden' name='$key' value='$value'>";
+          }
+          echo "</form>";
+          echo "<a onclick='document.getElementById(\"user-settings\").submit();' href='#'>settings</a>";
+          echo "</li></ul></div>";
+          echo "<div class='status'><span>".$_SESSION["user"]["naam"]."</span><br>
           <a href='$thisPage?logout=true'>logout</a></div>";
         }
         ?>
@@ -72,7 +91,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       <nav class="navClosed">
         <ul>
           <?php
-          if (!empty($_SESSION["user_type"])) {
+          if (!empty($_SESSION["user"]["toegangs_level"])) {
             foreach ($menuItems as $key => $value) {
               if ($value["menuItem"]) {
                 echo "<li>";
@@ -83,7 +102,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
                       foreach ($value as $key => $value) {
                         $found = false;
                         foreach ($value["type"] as $key => $valueType) {
-                          if ($valueType == $_SESSION["user_type"]) {
+                          if ($valueType == $_SESSION["user"]["toegangs_level"]) {
                             $found = true;
                           }
                         }
@@ -103,7 +122,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         </ul>
       </nav>
       <?php
-      if (!empty($_SESSION["name"])) {
+      if (!empty($_SESSION["user"]["toegangs_level"])) {
         echo '<img class="navArrow navArrowOpen" src="images/leftArrow.svg" alt="leftArrow">';
       }
       ?>
