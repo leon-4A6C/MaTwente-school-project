@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 <?php
-$_SESSION["user_type"] = "user";
+$_SESSION["user_type"] = "admin";
 $_SESSION["profileImg"] = "defaultProfile.svg";
 $_SESSION["name"] = "John Doe";
 $_SESSION["username"] = "VDelen";

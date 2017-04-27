@@ -1,9 +1,5 @@
 <?php session_start(); ?>
 <?php
-$_SESSION["user_type"] = "user";
-$_SESSION["profileImg"] = "defaultProfile.svg";
-$_SESSION["name"] = "John Doe";
-$_SESSION["username"] = "VDelen";
 $request_uri = substr($_SERVER["REQUEST_URI"], 1);
 // load menuItems.json
 $menuItemsFile = fopen("menuItems.json", "r") or die("unable to open menuItems.json");
@@ -43,7 +39,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     <title>MA Twente</title>
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
   </head>
   <body>
@@ -109,20 +105,25 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       ?>
     </header>
     <main class="new-user">
+      <?php echo $_POST["edit-afdelingen_id"]; ?>
       <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
         <?php // TODO: insert mysql user data ?>
         <?php // TODO: if no user info session data then get user info from login ?>
-        <input required type="text" name="name" value="" placeholder="naam">
-        <input required type="text" name="lastname" value="" placeholder="achternaam">
+        <input required type="text" name="name" value="<?php echo $_POST["edit-voornaam"]; ?>" placeholder="naam">
+        <input required type="text" name="lastname" value="<?php echo $_POST["edit-achternaam"]; ?>" placeholder="achternaam">
         <label for="gender">geslacht</label><br>
-        <label for="male">m </label><input id="male" required type="radio" name="gender" value="m" checked="true">&nbsp;&nbsp;&nbsp;
-        <label for="female">v </label><input id="female" required type="radio" name="gender" value="v">
+        <label for="male">m </label><input id="male" required type="radio" name="gender" value="m" <?php if($_POST["edit-geslacht"]=="m"){echo "checked";} ?>>&nbsp;&nbsp;&nbsp;
+        <label for="female">v </label><input id="female" required type="radio" name="gender" value="v" <?php if($_POST["edit-geslacht"]=="v"){echo "checked";} ?>>
         <select required name="department_id">
           <option value="false">afdeling</option>
           <?php
           $afdelingen = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM afdelingen");
           foreach ($afdelingen as $key => $value) {
-            echo "<option value='".$value["id"]."'>".$value["naam"]."</option>";
+            echo "<option ";
+            if ($_POST["edit-afdelingen_id"] == $value["id"]) {
+              echo "selected";
+            }
+            echo " value='".$value["id"]."'>".$value["naam"]."</option>";
           }
           ?>
         </select>
@@ -131,23 +132,28 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           <?php
           $configuraties = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT pc_nummer FROM configuraties");
           foreach ($configuraties as $key => $value) {
-            echo "<option value='".$value["pc_nummer"]."'>".$value["pc_nummer"]."</option>";
+            echo "<option ";
+            if ($_POST["edit-configuraties_nummer"] == $value["pc_nummer"]) {
+              echo "selected";
+            }
+            echo " value='".$value["pc_nummer"]."'>".$value["pc_nummer"]."</option>";
           }
           ?>
         </select>
-        <input type="number" min="100" max="999" name="intern_tel" value="" placeholder="intern telefoonnummer">
-        <input required type="email" name="email" value="" placeholder="email">
-        <input required type="text" name="username" value="" placeholder="gebruikersnaam">
+        <input type="number" min="100" max="999" name="intern_tel" value="<?php echo $_POST['edit-intern_tel']?>" placeholder="intern telefoonnummer">
+        <input required type="email" name="email" value="<?php echo $_POST['edit-email']?>" placeholder="email">
+        <input required type="text" name="username" value="<?php echo $_POST['edit-gebruikersnaam']?>" placeholder="gebruikersnaam">
         <label for="password">als je hem leeg laat word hij niet gewijzigd</label>
         <input required type="password" name="password" value="" placeholder="wachtwoord">
         <label for="profileImg">profiel foto</label>
         <input type="file" accept="image/*; capture=camera" name="profileImg" size="40">
         <?php
         if ($_SESSION["user_type"] == "admin") {
-          echo "<input type='text' name='toegangs_level' placeholder='toegangs level'>";
+          echo "<input type='text' name='toegangs_level' placeholder='toegangs level' value='".$_POST["edit-toegangs_level"]."'>";
         }
         ?>
         <input required type="password" name="comfirmPass" value="" placeholder="bevestiging wachtwoord">
+        <input type="hidden" name="id" value="<?php echo $_POST['edit-id'] ?>">
         <input type="submit" name="submit" value="wijzig account">
         <?php #form handler
         if (isset($_POST["submit"])) {
@@ -171,7 +177,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           if (!$_POST["toegangs_level"]) {
             $toegangs_level = "user";
           } else {
-            $toegangs_level = $_POST["toegangs_level"];
+            $toegangs_level = $_POST["user_type"];
           }
           // TODO: check eerst of het wachtwoord wel klopt in de DB
           $oud_wachtwoord = $_POST["confirmPass"];
@@ -193,11 +199,11 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           gebruikersnaam = '".$_POST["username"]."',
           wachtwoord = '".hash("sha256", $_POST["password"])."',
           profile_path = '$profile_path',
-          toegangs_level = '$toegangs_level' WHERE id = $id";
+          toegangs_level = '$toegangs_level' WHERE id = ".$_POST["id"];
           $insert = dataToDb("83.82.240.2", "user", "pass", "project", "gebruikers", $sql);
           if ($insert === true) {
-            if ($_SESSION["user_type"] == admin) {
-              echo "<succes>account succesvol gewijzigd <a href='configuraties.php'>login</a></succes><meta http-equiv=\"refresh\" content=\"2; url=index.php\" />";
+            if ($_SESSION["user_type"] == "admin") {
+              echo "<succes>account succesvol gewijzigd</succes><meta http-equiv=\"refresh\" content=\"2; url=user-overview.php\" />";
             } else {
               echo "<succes>account succesvol gewijzigd <a href='index.php'>login</a></succes><meta http-equiv=\"refresh\" content=\"2; url=index.php\" />";
             }

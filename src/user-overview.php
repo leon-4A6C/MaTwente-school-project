@@ -1,5 +1,6 @@
 <?php session_start(); ?>
 <?php
+$_SESSION["user_type"] = "admin";
 $request_uri = substr($_SERVER["REQUEST_URI"], 1);
 // load menuItems.json
 $menuItemsFile = fopen("menuItems.json", "r") or die("unable to open menuItems.json");
@@ -39,7 +40,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     <title>MA Twente</title>
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
   </head>
   <body>
@@ -106,9 +107,41 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     </header>
     <main class="user-overview">
       <?php
-      echo twoDimenTable(sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling' FROM gebruikers INNER JOIN afdelingen ON afdelingen_id = afdelingen.id"));
+      if ($_POST["delete-id"]) {
+        dataToDb("83.82.240.2", "user", "pass", "project", "gebruikers", "DELETE FROM gebruikers WHERE id = ".$_POST["delete-id"]);
+      }
+      $users_data = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT gebruikers.id, gebruikersnaam, geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling', afdelingen_id, configuraties_nummer, toegangs_level  FROM gebruikers INNER JOIN afdelingen ON afdelingen_id = afdelingen.id");
+      if ($_SESSION["user_type"] == "admin") {
+        foreach ($users_data as $key => $value) {
+          $forms = "<form id='".$users_data[$key]["gebruikersnaam"]."-edit' action='user-settings.php' method='post' style='display:none'>";
+          foreach ($value as $key1 => $value1) {
+            $forms .= "<input type='hidden' name='edit-$key1' value=\"$value1\">";
+          }
+          $forms .= "</form>";
+          $forms .= "<a href='#' class='edit-button' onclick='document.getElementById(\"".$users_data[$key]["gebruikersnaam"]."-edit\").submit();'><img src='../images/edit.svg' alt='edit'></a>
+            <form id='".$users_data[$key]["gebruikersnaam"]."-delete' action='$_SERVER[PHP_SELF]' method='post' style='display:none'>
+              <input type='hidden' name='delete-id' value='".$users_data[$key]["id"]."'>
+            </form>
+            <a class='edit-button' onclick='document.getElementById(\"".$users_data[$key]["gebruikersnaam"]."-delete\").submit();' href='#'><img src='../images/delete.svg' alt='delete'></a>
+          ";
+          $users_data[$key]["admin_tools"] = $forms;
+        }
+      } else {
+        // get data out of table
+        foreach ($users_data as $key => $value) {
+          unset($users_data[$key]["id"]);
+          unset($users_data[$key]["gebruikersnaam"]);
+          unset($users_data[$key]["configuraties_nummer"]);
+        }
+      }
+      // get data out of table
+      foreach ($users_data as $key => $value) {
+        unset($users_data[$key]["afdelingen_id"]);
+      }
+      echo twoDimenTable($users_data);
       ?>
     </main>
+
     <script src="javascript/nav.js" charset="utf-8"></script>
   </body>
 </html>
