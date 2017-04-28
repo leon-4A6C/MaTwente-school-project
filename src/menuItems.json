@@ -23,12 +23,12 @@
       [
         {
           "title": "overzicht",
-            "path": "configuraties-toevoegen.php",
+            "path": "configuraties-overzicht.php",
           "type": ["user", "admin"]
         },
         {
           "title": "toevoegen",
-          "path": "configuraties-toevoegen.php",
+            "path": "configuraties-toevoegen.php",
           "type": ["user", "admin"]
         }
       ]
