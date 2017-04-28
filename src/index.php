@@ -22,7 +22,7 @@
           if ($user["wachtwoord"] == hash("sha256", $_POST["wachtwoord"])) {
             $_SESSION["user"] = $user;
             $_SESSION["user"]["naam"] = $_SESSION["user"]["voornaam"] . " " . $_SESSION["user"]["achternaam"];
-            echo "<succes>succesvol ingelogd</succes><meta http-equiv='refresh' content='2;url=user-overview.php'> ";
+            echo "<succes>succesvol ingelogd</succes><meta http-equiv='refresh' content='1;url=user-overview.php'> ";
           } else {
             echo "<error>verkeerde wachtwoord ingevuld</error>";
           }
