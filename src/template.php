@@ -1,21 +1,5 @@
 <?php session_start(); ?>
 <?php
-
-// dit moet vervangen worden door het login ding
-// neppe data om in te loggen
-$_SESSION["user"]["toegangs_level"] = "admin";
-$_SESSION["user"]["profile_path"] = "defaultProfile.svg";
-$_SESSION["user"]["voornaam"] = "John";
-$_SESSION["user"]["achternaam"] = "Doe";
-$_SESSION["user"]["gebruikersnaam"] = "JohnDoe";
-$_SESSION["user"]["wachtwoord"] = hash("sha256", "Welkom123");
-$_SESSION["user"]["id"] = 95;
-$_SESSION["user"]["geslacht"] = "m";
-$_SESSION["user"]["afdelingen_id"] = 6;
-$_SESSION["user"]["intern_tel"] = 123;
-$_SESSION["user"]["email"] = "example@example.com";
-$_SESSION["user"]["configuraties_nummer"] = "20-182";
-$_SESSION["user"]["naam"] = $_SESSION["user"]["voornaam"] . " " . $_SESSION["user"]["achternaam"];
 $request_uri = substr($_SERVER["REQUEST_URI"], 1);
 // load menuItems.json
 $menuItemsFile = fopen("menuItems.json", "r") or die("unable to open menuItems.json");
