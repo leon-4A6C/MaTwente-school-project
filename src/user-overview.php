@@ -124,11 +124,11 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
             $forms .= "<input type='hidden' name='$key1' value=\"$value1\">";
           }
           $forms .= "</form>";
-          $forms .= "<a href='#' class='edit-button' onclick='document.getElementById(\"".$users_data[$key]["gebruikersnaam"]."-edit\").submit();'><img src='../images/edit.svg' alt='edit'></a>
+          $forms .= "<a href='#' class='edit-button' onclick='document.getElementById(\"".$users_data[$key]["gebruikersnaam"]."-edit\").submit();'><img src='images/edit.svg' alt='edit'></a>
             <form id='".$users_data[$key]["gebruikersnaam"]."-delete' action='$_SERVER[PHP_SELF]' method='post' style='display:none'>
               <input type='hidden' name='delete-id' value='".$users_data[$key]["id"]."'>
             </form>
-            <a class='edit-button' onclick='document.getElementById(\"".$users_data[$key]["gebruikersnaam"]."-delete\").submit();' href='#'><img src='../images/delete.svg' alt='delete'></a>
+            <a class='edit-button' onclick='document.getElementById(\"".$users_data[$key]["gebruikersnaam"]."-delete\").submit();' href='#'><img src='images/delete.svg' alt='delete'></a>
           ";
           $users_data[$key]["admin_tools"] = $forms;
         }
