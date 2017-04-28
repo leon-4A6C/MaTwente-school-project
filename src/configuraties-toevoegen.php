@@ -138,7 +138,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
 
 
           }
-        }
+        
         ?>
         </select>
       </form>
