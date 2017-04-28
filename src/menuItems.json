@@ -23,7 +23,7 @@
       [
         {
           "title": "overzicht",
-          "path": "configuraties-overzicht.php",
+            "path": "configuraties-toevoegen.php",
           "type": ["user", "admin"]
         },
         {
