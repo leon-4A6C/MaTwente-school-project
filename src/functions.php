@@ -15,7 +15,7 @@ function sqlSelect($servername, $username, $password, $dbname, $sql) {
       $rows[] = $row;
     }
   } else {
-    return "0 results";
+    return false;
   }
   $conn->close();
   return $rows;
