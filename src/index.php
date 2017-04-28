@@ -1,4 +1,5 @@
 <?php session_start(); ?>
+<?php include "functions.php" ?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -18,7 +19,7 @@
       if (isset($_POST["submit"])) {
         $user = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM gebruikers WHERE gebruikersnaam = '".$_POST["gebruikersnaam"]."'")[0];
         if ($user) {
-          if ($user["password"] == hash("sha256", $_POST["password"])) {
+          if ($user["wachtwoord"] == hash("sha256", $_POST["wachtwoord"])) {
             $_SESSION["user"] = $user;
             echo "<succes>succesvol ingelogd</succes><meta http-equiv='refresh' content='2;url=user-overview.php'> ";
           } else {
