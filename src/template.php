@@ -112,9 +112,6 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       ?>
     </header>
     <main class="PUT FILE NAME HERE">
-    <?php
-    print_r(sqlSelectMultiLine("83.82.240.2", "user", "pass", "project", "SELECT * FROM gebruikers; SELECT * FROM configuraties")[0]);
-    ?>
     </main>
     <script src="javascript/nav.js" charset="utf-8"></script>
   </body>

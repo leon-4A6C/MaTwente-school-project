@@ -37,7 +37,7 @@ function sqlSelectMultiLine($servername, $username, $password, $dbname, $sql) {
     do {
       /* store first result set */
       if ($result = $mysqli->store_result()) {
-        while ($row = $result->fetch_row()) {
+        while ($row = $result->fetch_assoc()) {
           $rows[$statementCount][] = $row;
         }
         $result->free();
