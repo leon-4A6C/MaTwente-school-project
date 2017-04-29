@@ -116,7 +116,16 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       if ($_POST["delete-id"]) {
         dataToDb("83.82.240.2", "user", "pass", "project", "gebruikers", "DELETE FROM gebruikers WHERE id = ".$_POST["delete-id"]);
       }
-      $users_data = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT gebruikers.id, gebruikersnaam, geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling', afdelingen_id, configuraties_nummer, toegangs_level  FROM gebruikers INNER JOIN afdelingen ON afdelingen_id = afdelingen.id");
+      $sql = "SELECT gebruikers.id, gebruikersnaam, geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling', afdelingen_id, configuraties_nummer, toegangs_level  FROM gebruikers INNER JOIN afdelingen ON afdelingen_id = afdelingen.id";
+      if($_GET["sort"]) {
+        $sql .= " ORDER BY " . $_GET["sort"];
+        if ($_GET["asc"] == true) {
+          $sql .= " ASC";
+        } else {
+          $sql .= " DESC";
+        }
+      }
+      $users_data = sqlSelect("83.82.240.2", "user", "pass", "project", $sql);
       if ($_SESSION["user"]["toegangs_level"] == "admin") {
         foreach ($users_data as $key => $value) {
           $forms = "<form id='".$users_data[$key]["gebruikersnaam"]."-edit' action='user-settings.php' method='post' style='display:none'>";
@@ -144,7 +153,11 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       foreach ($users_data as $key => $value) {
         unset($users_data[$key]["afdelingen_id"]);
       }
-      echo twoDimenTable($users_data);
+      if ($_GET["asc"] == true) {
+        echo twoDimenTableWithSortLinks($users_data, false);
+      } else {
+        echo twoDimenTableWithSortLinks($users_data, true);
+      }
       ?>
     </main>
     <script src="javascript/nav.js" charset="utf-8"></script>

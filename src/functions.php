@@ -38,6 +38,23 @@ function twoDimenTable($array) {
   return $table;
 }
 
+function twoDimenTableWithSortLinks($array, $asc) {
+  $table =  "<table border='1'><thead><tr>";
+  foreach ($array[0] as $key => $value) {
+    $table .=  "<th><a href='$_SERVER[PHP_SELF]?sort=$key&asc=$asc'>$key</a></th>";
+  }
+  $table .=  "</tr></thead><tbody>";
+  foreach ($array as $key => $value) {
+    $table .=  "<tr>";
+    foreach ($value as $key => $value) {
+      $table .=  "<td>$value</td>";
+    }
+    $table .=  "</tr>";
+  }
+  $table .=  "</tbody></table>";
+  return $table;
+}
+
 function dataToDb($servername, $username, $password, $dbname, $tableName, $sql) {
 
   $conn = new mysqli($servername, $username, $password, $dbname);
