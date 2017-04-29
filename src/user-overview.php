@@ -112,20 +112,47 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       ?>
     </header>
     <main class="user-overview">
+      <form id="user-overview-search" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get">
+        <input type="hidden" name="sort" value="<?php echo $_GET[sort] ?>">
+        <input type="hidden" name="asc" value="<?php echo $_GET[asc] ?>">
+        <input type="text" name="search" value="<?php echo $_GET[search] ?>" placeholder="zoek op naam, email, enz.">
+        <input type="image" name="submit" src="images/search.svg" alt="zoek" width="20em" style="margin-bottom:-0.5em">
+      </form>
       <?php
+      if ($_GET["search"]) {
+        $sql = "SELECT gebruikers.id, gebruikersnaam, geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling', afdelingen_id, configuraties_nummer, toegangs_level  FROM gebruikers LEFT JOIN afdelingen ON afdelingen_id = afdelingen.id WHERE gebruikers.id LIKE \"".$_GET["search"]."\";";
+      }
       if ($_POST["delete-id"]) {
         dataToDb("83.82.240.2", "user", "pass", "project", "gebruikers", "DELETE FROM gebruikers WHERE id = ".$_POST["delete-id"]);
       }
-      $sql = "SELECT gebruikers.id, gebruikersnaam, geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling', afdelingen_id, configuraties_nummer, toegangs_level  FROM gebruikers LEFT JOIN afdelingen ON afdelingen_id = afdelingen.id";
+      if (empty($sql)) {
+        $sql = "SELECT gebruikers.id, gebruikersnaam, geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling', afdelingen_id, configuraties_nummer, toegangs_level  FROM gebruikers LEFT JOIN afdelingen ON afdelingen_id = afdelingen.id;";
+      }
       if($_GET["sort"]) {
-        $sql .= " ORDER BY " . $_GET["sort"];
+        $sqlReplace = " ORDER BY " . $_GET["sort"];
         if ($_GET["asc"] == true) {
-          $sql .= " ASC";
+          $sqlReplace .= " ASC";
         } else {
-          $sql .= " DESC";
+          $sqlReplace .= " DESC";
+        }
+        $sql = str_replace(";", $sqlReplace, $sql);
+      }
+      $semicolomnCount = 0;
+      $lastFoundSemicolomn = 0;
+      while ($semicolomnCount <= 1) {
+        $semicolomn = strpos($sql, ";", $lastFoundSemicolomn);
+        if ($semicolomn) {
+          $lastFoundSemicolomn = $semicolomn;
+          $semicolomnCount++;
+        } else {
+          break;
         }
       }
-      $users_data = sqlSelect("83.82.240.2", "user", "pass", "project", $sql);
+      if ($semicolomnCount > 1) {
+        $users_data = sqlSelectMultiLine("83.82.240.2", "user", "pass", "project", $sql);
+      } else {
+        $users_data = sqlSelect("83.82.240.2", "user", "pass", "project", $sql);
+      }
       if ($_SESSION["user"]["toegangs_level"] == "admin") {
         foreach ($users_data as $key => $value) {
           $forms = "<form id='".$users_data[$key]["gebruikersnaam"]."-edit' action='user-settings.php' method='post' style='display:none'>";
@@ -154,9 +181,9 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         unset($users_data[$key]["afdelingen_id"]);
       }
       if ($_GET["asc"] == true) {
-        echo twoDimenTableWithSortLinks($users_data, false);
+        echo twoDimenTableWithSortLinks($users_data, false, $_GET["search"]);
       } else {
-        echo twoDimenTableWithSortLinks($users_data, true);
+        echo twoDimenTableWithSortLinks($users_data, true, $_GET["search"]);
       }
       ?>
     </main>

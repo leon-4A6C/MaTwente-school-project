@@ -21,6 +21,39 @@ function sqlSelect($servername, $username, $password, $dbname, $sql) {
   return $rows;
 }
 
+function sqlSelectMultiLine($servername, $username, $password, $dbname, $sql) {
+  $mysqli = new mysqli($servername, $username, $password, $dbname);
+
+  /* check connection */
+  if (mysqli_connect_errno()) {
+    printf("Connect failed: %s\n", mysqli_connect_error());
+    exit();
+  }
+
+  /* execute multi query */
+  if ($mysqli->multi_query($sql)) {
+    $rows = [];
+    $statementCount = 0;
+    do {
+      /* store first result set */
+      if ($result = $mysqli->store_result()) {
+        while ($row = $result->fetch_row()) {
+          $rows[$statementCount][] = $row;
+        }
+        $result->free();
+      }
+      /* print divider */
+      if ($mysqli->more_results()) {
+        $statementCount++;
+      }
+    } while ($mysqli->next_result());
+  }
+
+  /* close connection */
+  $mysqli->close();
+  return $rows;
+}
+
 function twoDimenTable($array) {
   $table =  "<table border='1'><thead><tr>";
   foreach ($array[0] as $key => $value) {
@@ -38,10 +71,10 @@ function twoDimenTable($array) {
   return $table;
 }
 
-function twoDimenTableWithSortLinks($array, $asc) {
+function twoDimenTableWithSortLinks($array, $asc, $search) {
   $table =  "<table border='1'><thead><tr>";
   foreach ($array[0] as $key => $value) {
-    $table .=  "<th><a href='$_SERVER[PHP_SELF]?sort=$key&asc=$asc'>$key</a></th>";
+    $table .=  "<th><a href='$_SERVER[PHP_SELF]?sort=$key&asc=$asc&search=$search'>$key</a></th>";
   }
   $table .=  "</tr></thead><tbody>";
   foreach ($array as $key => $value) {
