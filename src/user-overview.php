@@ -63,7 +63,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           echo "<a onclick='document.getElementById(\"user-settings\").submit();' href='#'>settings</a>";
           echo "</li></ul></div>";
           echo "<div class='status'><span>".$_SESSION["user"]["naam"]."</span><br>
-          <a href='$thisPage?logout=true'>logout</a></div>";
+          <a href='$thisPage?logout=true'>logout</a></div>"; // bug when using get's in page FIX IT!
         }
         ?>
         <?php if (isset($_GET["logout"])) {
@@ -119,7 +119,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         <input type="image" name="submit" src="images/search.svg" alt="zoek" width="20em" style="margin-bottom:-0.5em">
       </form>
       <?php
-      if ($_GET["search"]) {
+      if (!empty($_GET["search"])){
         $sql = "SELECT gebruikers.id, gebruikersnaam, geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling', afdelingen_id, configuraties_nummer, toegangs_level  FROM gebruikers LEFT JOIN afdelingen ON afdelingen_id = afdelingen.id WHERE gebruikers.id LIKE \"".$_GET["search"]."\";";
         $sql .= "SELECT gebruikers.id, gebruikersnaam, geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling', afdelingen_id, configuraties_nummer, toegangs_level  FROM gebruikers LEFT JOIN afdelingen ON afdelingen_id = afdelingen.id WHERE gebruikersnaam LIKE \"".$_GET["search"]."\";";
         $sql .= "SELECT gebruikers.id, gebruikersnaam, geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling', afdelingen_id, configuraties_nummer, toegangs_level  FROM gebruikers LEFT JOIN afdelingen ON afdelingen_id = afdelingen.id WHERE geslacht LIKE \"".$_GET["search"]."\";";
@@ -141,9 +141,9 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       if($_GET["sort"]) {
         $sqlReplace = " ORDER BY " . $_GET["sort"];
         if ($_GET["asc"] == true) {
-          $sqlReplace .= " ASC";
+          $sqlReplace .= " ASC;";
         } else {
-          $sqlReplace .= " DESC";
+          $sqlReplace .= " DESC;";
         }
         $sql = str_replace(";", $sqlReplace, $sql);
       }
@@ -184,10 +184,12 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       }
       if ($_GET["asc"] == true) {
         foreach ($users_data as $key => $value) {
+          echo "<h1>een ding waar hij iets heeft gevonden.</h1>"; // I'll just figure this out later
           echo twoDimenTableWithSortLinks($value, false, $_GET["search"]);
         }
       } else {
         foreach ($users_data as $key => $value) {
+          echo "<h1>een ding waar hij iets heeft gevonden.</h1>"; // I'll just figure this out later
           echo twoDimenTableWithSortLinks($value, true, $_GET["search"]);
         }
       }

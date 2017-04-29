@@ -10,7 +10,7 @@
   <body>
     <main class="login">
       <form name="form" action="" method="post">
-        <input required type="text" name="gebruikersnaam" placeholder="gebruikersnaam" value="">
+        <input required type="text" name="gebruikersnaam" placeholder="gebruikersnaam" value="<?php echo $_POST['gebruikersnaam'] ?>">
         <input required type="password" name="wachtwoord" placeholder="wachtwoord" value="">
         <input type="submit" name="submit" value="login">
         <a href="new-user.php">cre&euml;er account</a>

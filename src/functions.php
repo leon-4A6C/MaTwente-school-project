@@ -77,7 +77,7 @@ function twoDimenTable($array) {
   return $table;
 }
 
-// returns a table from an two dimensional array with order links
+// returns a table from an two dimensional array with order links the links send sort, asc and search in the $_GET variable
 function twoDimenTableWithSortLinks($array, $asc, $search) {
   $table =  "<table border='1'><thead><tr>";
   foreach ($array[0] as $key => $value) {
