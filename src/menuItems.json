@@ -41,12 +41,12 @@
       [
         {
           "title": "overzicht",
-          "path": "apparaten-overzicht.php",
+            "path": "apparaten-overzicht.php",
           "type": ["user", "admin"]
         },
         {
           "title": "toevoegen",
-          "path": "apparaten-overzicht.php",
+            "path": "apparaten-toeveoegen.php",
           "type": ["admin"]
         }
       ]
