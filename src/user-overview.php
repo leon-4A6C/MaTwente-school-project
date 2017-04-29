@@ -149,8 +149,10 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         }
       }
       if ($semicolomnCount > 1) {
-        $users_data = sqlSelectMultiLine("83.82.240.2", "user", "pass", "project", $sql);
+        $users_data = sqlSelectMultiLine("83.82.240.2", "user", "pass", "project", $sql)[0];
+        echo "multiline";
       } else {
+        echo "singleline";
         $users_data = sqlSelect("83.82.240.2", "user", "pass", "project", $sql);
       }
       if ($_SESSION["user"]["toegangs_level"] == "admin") {
