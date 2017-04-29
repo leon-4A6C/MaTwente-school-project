@@ -137,24 +137,8 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         }
         $sql = str_replace(";", $sqlReplace, $sql);
       }
-      $semicolomnCount = 0;
-      $lastFoundSemicolomn = 0;
-      while ($semicolomnCount <= 1) {
-        $semicolomn = strpos($sql, ";", $lastFoundSemicolomn);
-        if ($semicolomn) {
-          $lastFoundSemicolomn = $semicolomn;
-          $semicolomnCount++;
-        } else {
-          break;
-        }
-      }
-      if ($semicolomnCount > 1) {
-        $users_data = sqlSelectMultiLine("83.82.240.2", "user", "pass", "project", $sql)[0];
-        echo "multiline";
-      } else {
-        echo "singleline";
-        $users_data = sqlSelect("83.82.240.2", "user", "pass", "project", $sql);
-      }
+
+      $users_data = sqlSelectMultiLine("83.82.240.2", "user", "pass", "project", $sql);
       if ($_SESSION["user"]["toegangs_level"] == "admin") {
         foreach ($users_data as $key => $value) {
           $forms = "<form id='".$users_data[$key]["gebruikersnaam"]."-edit' action='user-settings.php' method='post' style='display:none'>";
@@ -173,9 +157,11 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       } else {
         // get data out of table
         foreach ($users_data as $key => $value) {
-          unset($users_data[$key]["id"]);
-          unset($users_data[$key]["gebruikersnaam"]);
-          unset($users_data[$key]["configuraties_nummer"]);
+          foreach ($users_data as $key => $value) {
+            unset($users_data[$key]["id"]);
+            unset($users_data[$key]["gebruikersnaam"]);
+            unset($users_data[$key]["configuraties_nummer"]);
+          }
         }
       }
       // get data out of table
@@ -183,9 +169,13 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         unset($users_data[$key]["afdelingen_id"]);
       }
       if ($_GET["asc"] == true) {
-        echo twoDimenTableWithSortLinks($users_data, false, $_GET["search"]);
+        foreach ($users_data as $key => $value) {
+          echo twoDimenTableWithSortLinks($value, false, $_GET["search"]);
+        }
       } else {
-        echo twoDimenTableWithSortLinks($users_data, true, $_GET["search"]);
+        foreach ($users_data as $key => $value) {
+          echo twoDimenTableWithSortLinks($value, true, $_GET["search"]);
+        }
       }
       ?>
     </main>

@@ -1,5 +1,6 @@
 <?php
 
+// select data from db and returns an two dimensional array
 function sqlSelect($servername, $username, $password, $dbname, $sql) {
   // Create connection
   $conn = new mysqli($servername, $username, $password, $dbname);
@@ -21,6 +22,7 @@ function sqlSelect($servername, $username, $password, $dbname, $sql) {
   return $rows;
 }
 
+// multiple queries in database, returns three dimensional array
 function sqlSelectMultiLine($servername, $username, $password, $dbname, $sql) {
   $mysqli = new mysqli($servername, $username, $password, $dbname);
 
@@ -54,6 +56,10 @@ function sqlSelectMultiLine($servername, $username, $password, $dbname, $sql) {
   return $rows;
 }
 
+// example
+// echo twoDimenTable(sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM gebruikers"));
+
+// returns a table from an two dimensional array
 function twoDimenTable($array) {
   $table =  "<table border='1'><thead><tr>";
   foreach ($array[0] as $key => $value) {
@@ -71,6 +77,7 @@ function twoDimenTable($array) {
   return $table;
 }
 
+// returns a table from an two dimensional array with order links
 function twoDimenTableWithSortLinks($array, $asc, $search) {
   $table =  "<table border='1'><thead><tr>";
   foreach ($array[0] as $key => $value) {
@@ -88,6 +95,7 @@ function twoDimenTableWithSortLinks($array, $asc, $search) {
   return $table;
 }
 
+// sends data to DB
 function dataToDb($servername, $username, $password, $dbname, $tableName, $sql) {
 
   $conn = new mysqli($servername, $username, $password, $dbname);
@@ -114,6 +122,7 @@ function dataToDb($servername, $username, $password, $dbname, $tableName, $sql) 
 //
 // echo generateSqlInsert($dataArray, "medewerkers");
 
+// unneeded by this project
 function generateSqlInsert($dataArray, $tableName) {
   $sql = "INSERT INTO $tableName(";
   $counter = 0;
@@ -146,6 +155,7 @@ function generateSqlInsert($dataArray, $tableName) {
   return $sql;
 }
 
+// unneeded by this project
 function generateSqlSelectFilter($tableName, $inputArray) {
   $sql = "SELECT * FROM $tableName";
   if (count($inputArray) > 0) {
@@ -169,6 +179,7 @@ function generateSqlSelectFilter($tableName, $inputArray) {
   return $sql;
 }
 
+// a logout function
 function logout() {
   $_SESSION = array();
   session_destroy();
