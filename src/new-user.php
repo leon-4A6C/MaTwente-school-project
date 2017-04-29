@@ -209,7 +209,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
               if ($_SESSION["user"]["toegangs_level"] == "admin") {
                 echo "<succes>account succesvol aangemaakt</succes><meta http-equiv=\"refresh\" content=\"2; url=user-overview.php\" />";
               } else {
-                echo "<succes>account succesvol aangemaakt <a href='index.php'>login</a></succes><meta http-equiv=\"refresh\" content=\"2; url=index.php\" />";
+                echo "<succes>account succesvol aangemaakt, u mag alleen nog niet op de site tot u bent goedgekeurd door de helpdesk bel of mail naar ze om je account te verifiëren <a href='index.php'>login</a></succes>";
               }
             } else {
               echo "<error>gebruikersnaam is al in gebruik</error>";
