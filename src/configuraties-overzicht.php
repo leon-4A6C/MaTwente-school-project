@@ -113,51 +113,9 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     </header>
     <main class="PUT FILE NAME HERE">
       <?php
-      if ($_POST["delete-id"]) {
-        dataToDb("83.82.240.2", "user", "pass", "project", "configuraties", "DELETE FROM configuraties WHERE id = ".$_POST["delete-id"]);
-      }
       $sql = "SELECT configuraties.id, pc_nummer, onderhoud_datum, apparaat_id, FROM configuraties ";
-      if($_GET["sort"]) {
-        $sql .= " ORDER BY " . $_GET["sort"];
-        if ($_GET["asc"] == true) {
-          $sql .= " ASC";
-        } else {
-          $sql .= " DESC";
-        }
-      }
-      $users_data = sqlSelect("83.82.240.2", "user", "pass", "project", $sql);
-      if ($_SESSION["user"]["toegangs_level"] == "admin") {
-        foreach ($users_data as $key => $value) {
-          $forms = "<form id='".$users_data[$key]["gebruikersnaam"]."-edit' action='user-settings.php' method='post' style='display:none'>";
-          foreach ($value as $key1 => $value1) {
-            $forms .= "<input type='hidden' name='$key1' value=\"$value1\">";
-          }
-          $forms .= "</form>";
-          $forms .= "<a href='#' class='edit-button' onclick='document.getElementById(\"".$users_data[$key]["gebruikersnaam"]."-edit\").submit();'><img src='images/edit.svg' alt='edit'></a>
-            <form id='".$users_data[$key]["gebruikersnaam"]."-delete' action='$_SERVER[PHP_SELF]' method='post' style='display:none'>
-              <input type='hidden' name='delete-id' value='".$users_data[$key]["id"]."'>
-            </form>
-            <a class='edit-button' onclick='document.getElementById(\"".$users_data[$key]["gebruikersnaam"]."-delete\").submit();' href='#'><img src='images/delete.svg' alt='delete'></a>
-          ";
-          $users_data[$key]["admin_tools"] = $forms;
-        }
-      } else {
-        // get data out of table
-        foreach ($users_data as $key => $value) {
-          unset($users_data[$key]["id"]);
-          unset($users_data[$key]["gebruikersnaam"]);
-          unset($users_data[$key]["configuraties_nummer"]);
-        }
-      }
-      // get data out of table
-      foreach ($users_data as $key => $value) {
-        unset($users_data[$key]["afdelingen_id"]);
-      }
-      if ($_GET["asc"] == true) {
-        echo twoDimenTableWithSortLinks($users_data, false);
-      } else {
-        echo twoDimenTableWithSortLinks($users_data, true);
-      }
+    
+
       ?>
 
     </main>
