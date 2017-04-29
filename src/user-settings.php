@@ -57,7 +57,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           echo "</li><li>";
           echo "<form id='user-settings' action='user-settings.php' method='post' style='display:none'>";
           foreach ($_SESSION["user"] as $key => $value) {
-            echo "<input type='hidden' name='$key' value='$value'>";
+            echo "<input type='hidden' name='$key' value=\"$value\">";
           }
           echo "</form>";
           echo "<a onclick='document.getElementById(\"user-settings\").submit();' href='#'>settings</a>";
@@ -149,8 +149,8 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         <input required type="text" name="gebruikersnaam" value="<?php echo $_POST['gebruikersnaam']?>" placeholder="gebruikersnaam">
         <label for="wachtwoord">als je hem leeg laat word hij niet gewijzigd</label>
         <input type="password" name="wachtwoord" value="" placeholder="wachtwoord">
-        <label for="profile_path">profiel foto</label>
-        <input type="file" accept="image/*; capture=camera" name="profile_path" size="40">
+        <label for="profile_path_file">profiel foto</label>
+        <input type="file" accept="image/*; capture=camera" name="profile_path_file" size="40">
         <?php
         if ($_SESSION["user"]["toegangs_level"] == "admin") {
           echo "<input type='text' name='toegangs_level' placeholder='toegangs level' value='".$_POST["toegangs_level"]."'>";
@@ -158,6 +158,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         ?>
         <input required type="password" name="bevestegings_wachtwoord" value="" placeholder="bevestiging wachtwoord">
         <input type="hidden" name="id" value="<?php echo $_POST['id']?>">
+        <input type="hidden" name="profile_path" value="<?php echo $_POST['profile_path']?>">
         <input type="submit" name="submit" value="wijzig account">
         <?php #form handler
         if (isset($_POST["submit"])) {
@@ -174,15 +175,24 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           $toegangs_level = trim($_POST["toegangs_level"]);
           $bevestegings_wachtwoord = hash("sha256",trim($_POST["bevestegings_wachtwoord"]));
 
-          if ($_POST["afdelingen_id"] == false) {
-            $afdelingen_id = null;
-          } else {
-            $afdelingen_id = $_POST["afdelingen_id"];
-          }
           if (!$toegangs_level) {
             $toegangs_level = $_SESSION["user"]["toegangs_level"];
           } else {
             $toegangs_level = $_POST["toegangs_level"];
+          }
+
+          if ($_POST["afdelingen_id"] == 'false') {
+            $afdelingen_id = "null";
+          } else {
+            $afdelingen_id = $_POST["afdelingen_id"];
+          }
+          if ($_POST["configuraties_nummer"] == 'false') {
+            $configuraties_nummer = "null";
+          }else {
+            $configuraties_nummer = "'".$_POST["configuraties_nummer"]."'";
+          }
+          if (empty($intern_tel)) {
+            $intern_tel = "null";
           }
 
           if (!$wachtwoord) {
@@ -194,14 +204,14 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           // check of het wachtwoord overeen komt met de persoon die ingelogd is.
           if ($bevestegings_wachtwoord == $_SESSION["user"]["wachtwoord"]) {
             //file upload
-            $uploadfile = "images/profiles/" . basename($_FILES["profile_path"]["name"]);
-            if ($_FILES["profile_path"]["size"] < 300000) {
-              if (move_uploaded_file($_FILES["profile_path"]["tm`p_name"], $uploadfile)) {
+            $uploadfile = "images/profiles/" . basename($_FILES["profile_path_file"]["name"]);
+            if ($_FILES["profile_path_file"]["size"] < 300000) {
+              if (move_uploaded_file($_FILES["profile_path_file"]["tmp_name"], $uploadfile)) {
                 $file_uploaded = true;
-                $profile_path = $_FILES["profile_path"]["name"];
+                $profile_path = $_FILES["profile_path_file"]["name"];
               }else {
-                if ($_FILES["profile_path"]["error"] == UPLOAD_ERR_NO_FILE) {
-                  $profile_path = "defaultProfile.svg";
+                if ($_FILES["profile_path_file"]["error"] == UPLOAD_ERR_NO_FILE) {
+                  $profile_path = $_POST["profile_path"];
                 } else {
                   echo "<error>er ging iets fout met de afbeelding probeer het opnieuw of laat hem leeg voor een standaard afbeelding.</error>";
                 }
@@ -210,13 +220,12 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
               echo "<error>bestandsgrootte is te groot, kies een bestand tussen de 0 en 0.3MB</error>";
             }
 
-
             $sql = "UPDATE gebruikers
             SET voornaam = '".$voornaam."',
             achternaam = \"$achternaam\",
             geslacht = '".$_POST["geslacht"]."',
             afdelingen_id = ".$afdelingen_id.",
-            configuraties_nummer = '".$_POST["configuraties_nummer"]."',
+            configuraties_nummer = $configuraties_nummer,
             intern_tel = ".$intern_tel.",
             email = '".$email."',
             gebruikersnaam = '".$gebruikersnaam."',

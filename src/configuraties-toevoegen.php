@@ -46,7 +46,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     <header>
       <div class="profileBar">
         <?php
-        if (empty($_SESSION["user"]["naam"]) || !$_SESSION["user"]["naam"]) {
+        if (!$_SESSION["user"]["toegangs_level"]) {
           echo "<div class='profile'>";
           echo "<a href='index.php'>login</a></div>";
         } else {
@@ -54,7 +54,14 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           echo "<img src=\"images/profiles/".$_SESSION["user"]["profile_path"]."\" alt=\"profile\" class=\"profilePicture\">";
           echo "</a><ul><li>";
           echo "<a href='$thisPage?logout=true'>logout</a>";
-          echo "</li><li><a href='user-settings.php'>settings</a></li></ul></div>";
+          echo "</li><li>";
+          echo "<form id='user-settings' action='user-settings.php' method='post' style='display:none'>";
+          foreach ($_SESSION["user"] as $key => $value) {
+            echo "<input type='hidden' name='$key' value=\"$value\">";
+          }
+          echo "</form>";
+          echo "<a onclick='document.getElementById(\"user-settings\").submit();' href='#'>settings</a>";
+          echo "</li></ul></div>";
           echo "<div class='status'><span>".$_SESSION["user"]["naam"]."</span><br>
           <a href='$thisPage?logout=true'>logout</a></div>";
         }
@@ -99,7 +106,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         </ul>
       </nav>
       <?php
-      if (!empty($_SESSION["user"]["naam"])) {
+      if (!empty($_SESSION["user"]["toegangs_level"])) {
         echo '<img class="navArrow navArrowOpen" src="images/leftArrow.svg" alt="leftArrow">';
       }
       ?>
@@ -138,7 +145,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
 
 
           }
-        
+
         ?>
         </select>
       </form>

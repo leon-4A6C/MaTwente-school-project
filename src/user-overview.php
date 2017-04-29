@@ -57,7 +57,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           echo "</li><li>";
           echo "<form id='user-settings' action='user-settings.php' method='post' style='display:none'>";
           foreach ($_SESSION["user"] as $key => $value) {
-            echo "<input type='hidden' name='$key' value='$value'>";
+            echo "<input type='hidden' name='$key' value=\"$value\">";
           }
           echo "</form>";
           echo "<a onclick='document.getElementById(\"user-settings\").submit();' href='#'>settings</a>";
@@ -116,7 +116,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       if ($_POST["delete-id"]) {
         dataToDb("83.82.240.2", "user", "pass", "project", "gebruikers", "DELETE FROM gebruikers WHERE id = ".$_POST["delete-id"]);
       }
-      $sql = "SELECT gebruikers.id, gebruikersnaam, geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling', afdelingen_id, configuraties_nummer, toegangs_level  FROM gebruikers INNER JOIN afdelingen ON afdelingen_id = afdelingen.id";
+      $sql = "SELECT gebruikers.id, gebruikersnaam, geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling', afdelingen_id, configuraties_nummer, toegangs_level  FROM gebruikers LEFT JOIN afdelingen ON afdelingen_id = afdelingen.id";
       if($_GET["sort"]) {
         $sql .= " ORDER BY " . $_GET["sort"];
         if ($_GET["asc"] == true) {

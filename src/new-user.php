@@ -46,7 +46,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     <header>
       <div class="profileBar">
         <?php
-        if (empty($_SESSION["user"]["naam"]) || !$_SESSION["user"]["naam"]) {
+        if (!$_SESSION["user"]["toegangs_level"]) {
           echo "<div class='profile'>";
           echo "<a href='index.php'>login</a></div>";
         } else {
@@ -54,7 +54,14 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           echo "<img src=\"images/profiles/".$_SESSION["user"]["profile_path"]."\" alt=\"profile\" class=\"profilePicture\">";
           echo "</a><ul><li>";
           echo "<a href='$thisPage?logout=true'>logout</a>";
-          echo "</li><li><a href='user-settings.php'>settings</a></li></ul></div>";
+          echo "</li><li>";
+          echo "<form id='user-settings' action='user-settings.php' method='post' style='display:none'>";
+          foreach ($_SESSION["user"] as $key => $value) {
+            echo "<input type='hidden' name='$key' value=\"$value\">";
+          }
+          echo "</form>";
+          echo "<a onclick='document.getElementById(\"user-settings\").submit();' href='#'>settings</a>";
+          echo "</li></ul></div>";
           echo "<div class='status'><span>".$_SESSION["user"]["naam"]."</span><br>
           <a href='$thisPage?logout=true'>logout</a></div>";
         }
@@ -99,7 +106,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         </ul>
       </nav>
       <?php
-      if (!empty($_SESSION["user"]["naam"])) {
+      if (!empty($_SESSION["user"]["toegangs_level"])) {
         echo '<img class="navArrow navArrowOpen" src="images/leftArrow.svg" alt="leftArrow">';
       }
       ?>
@@ -159,13 +166,20 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           $email = trim($_POST["email"]);
           $gebruikersnaam = trim($_POST["gebruikersnaam"]);
           $wachtwoord = trim($_POST["wachtwoord"]);
-          $configuraties_nummer = $_POST["configuraties_nummer"];
           $geslacht = $_POST["geslacht"];
 
-          if ($_POST["afdelingen_id"] == false) {
-            $afdelingen_id = null;
+          if ($_POST["afdelingen_id"] == 'false') {
+            $afdelingen_id = "null";
           } else {
             $afdelingen_id = $_POST["afdelingen_id"];
+          }
+          if ($_POST["configuraties_nummer"] == 'false') {
+            $configuraties_nummer = "null";
+          }else {
+            $configuraties_nummer = "'".$_POST["configuraties_nummer"]."'";
+          }
+          if (empty($intern_tel)) {
+            $intern_tel = "null";
           }
           $toegangs_level = $_POST["toegangs_level"];
           $wachtwoord = hash("sha256", $wachtwoord);
@@ -180,16 +194,16 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
               if ($_FILES["profile_path"]["error"] == UPLOAD_ERR_NO_FILE) {
                 $profile_path = "defaultProfile.svg";
               } else {
-                echo "<meta http-equiv=\"refresh\" content=\"0; url=$thisPage?error=er ging iets fout met de afbeelding probeer het opnieuw of laat hem leeg voor een standaard afbeelding.&name=$_POST[name]&lastname=$_POST[lastname]&gender=$_POST[gender]&department_id=$_POST[department_id]&pc_nummer=$_POST[pc_nummer]&intern_tel=$_POST[intern_tel]&email=$_POST[email]&username=$_POST[username]\" />";
+                echo "<error>er ging iets fout met de afbeelding probeer het opnieuw of laat hem leeg voor een standaard afbeelding.</error>";
               }
             }
             $upload = true;
           } else {
-            echo "<meta http-equiv=\"refresh\" content=\"0; url=$thisPage?error=bestandsgrootte is te groot, kies een bestand tussen de 0 en 0.3MB&name=$_POST[name]&lastname=$_POST[lastname]&gender=$_POST[gender]&department_id=$_POST[department_id]&pc_nummer=$_POST[pc_nummer]&intern_tel=$_POST[intern_tel]&email=$_POST[email]&username=$_POST[username]\" />";
+            echo "<error>bestandsgrootte is te groot, kies een bestand tussen de 0 en 0.3MB</error>";
           }
           if ($upload) {
             $sql = "INSERT INTO gebruikers(geslacht, voornaam, achternaam, afdelingen_id, intern_tel, email, configuraties_nummer, gebruikersnaam, wachtwoord, profile_path, toegangs_level)
-            VALUES('$geslacht', \"$voornaam\",\"$achternaam\", $afdelingen_id, $intern_tel, '$email', '$configuraties_nummer', '$gebruikersnaam', '$wachtwoord', '$profile_path', '$toegangs_level')";
+            VALUES('$geslacht', \"$voornaam\",\"$achternaam\", $afdelingen_id, $intern_tel, '$email', $configuraties_nummer, '$gebruikersnaam', '$wachtwoord', '$profile_path', '$toegangs_level')";
             $insert = dataToDb("83.82.240.2", "user", "pass", "project", "gebruikers", $sql);
             if ($insert === true) {
               if ($_SESSION["user"]["toegangs_level"] == "admin") {
@@ -199,6 +213,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
               }
             } else {
               echo "<error>gebruikersnaam is al in gebruik</error>";
+              echo $insert;
             }
           }
         }

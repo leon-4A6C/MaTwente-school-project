@@ -57,7 +57,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           echo "</li><li>";
           echo "<form id='user-settings' action='user-settings.php' method='post' style='display:none'>";
           foreach ($_SESSION["user"] as $key => $value) {
-            echo "<input type='hidden' name='$key' value='$value'>";
+            echo "<input type='hidden' name='$key' value=\"$value\">";
           }
           echo "</form>";
           echo "<a onclick='document.getElementById(\"user-settings\").submit();' href='#'>settings</a>";
