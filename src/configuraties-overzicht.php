@@ -113,7 +113,8 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     </header>
     <main class="PUT FILE NAME HERE">
       <?php
-    
+    echo twoDimenTable(sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM configuraties"));
+    ?>
 
     </main>
     <script src="javascript/nav.js" charset="utf-8"></script>
