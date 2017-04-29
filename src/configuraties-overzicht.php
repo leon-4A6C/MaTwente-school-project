@@ -113,10 +113,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     </header>
     <main class="PUT FILE NAME HERE">
       <?php
-      $sql = "SELECT configuraties.id, pc_nummer, onderhoud_datum, apparaat_id, FROM configuraties ";
     
-
-      ?>
 
     </main>
     <script src="javascript/nav.js" charset="utf-8"></script>
