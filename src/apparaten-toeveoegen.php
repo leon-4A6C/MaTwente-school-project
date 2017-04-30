@@ -113,8 +113,14 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
     </header>
     <main class="new-user">
       <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
-        <input required type="text" name="pc_nummer" value="<?php echo $_POST["pc_nummer"]; ?>" placeholder="pc_nummer">
-        <input required type="text" name="onderhoud_datum" value="<?php echo $_POST["onderhoud_datum"]; ?>" placeholder="onderhoud_datum">
+        <input required type="text" name="opslag_ssd" value="<?php echo $_POST["opslag_ssd"]; ?>" placeholder="opslag_ssd">
+        <input required type="text" name="opslag_hdd" value="<?php echo $_POST["opslag_hdd"]; ?>" placeholder="opslag_hdd">
+        <input required type="text" name="cpu" value="<?php echo $_POST["cpu"]; ?>" placeholder="cpu">
+        <input required type="text" name="gpu" value="<?php echo $_POST["gpu"]; ?>" placeholder="gpu">
+        <input required type="text" name="os" value="<?php echo $_POST["os"]; ?>" placeholder="os">
+        <input required type="text" name="merk" value="<?php echo $_POST["merk"]; ?>" placeholder="merk">
+        <input required type="text" name="memory" value="<?php echo $_POST["memory"]; ?>" placeholder="memory">
+        <input required type="text" name="id" value="<?php echo $_POST["id"]; ?>" placeholder="id">
         <select required name="apparaat_id">
           <option value="false">configuratie</option>
           <?php
@@ -127,12 +133,20 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
             echo " value='".$value["apparaat_id"]."'>".$value["apparaat_id"]."</option>";
           }
           ?>
+            <input type="submit" name="submit" value="submit">
           <?php #form handler
         if (isset($_POST["submit"])) {
 
           // clean user input
           $pc_nummer = ucfirst(trim($_POST["pc_nummer"]));
-          $onderhoud_datum = trim($_POST["onderhoud_datum"]);
+          $opslag_ssd = trim($_POST["opslag_ssd"]);
+          $opslag_hdd = trim($_POST["opslag_hdd"]);
+          $cpu = trim($_POST["cpu"]);
+          $gpu = trim($_POST["gpu"]);
+          $os = trim($_POST["os"]);
+          $merk = trim($_POST["merk"]);
+          $memory = trim($_POST["memory"]);
+          $id = trim($_POST["id"]);
 
 
           if ($_POST["afdelingen_id"] == false) {

@@ -127,6 +127,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
             echo " value='".$value["apparaat_id"]."'>".$value["apparaat_id"]."</option>";
           }
           ?>
+            <input type="submit" name="submit" value="cre&euml;er configuratie">
           <?php #form handler
         if (isset($_POST["submit"])) {
 
