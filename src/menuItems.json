@@ -54,17 +54,17 @@
     "menuItem": true
   },
   {
-    "meldingen": {
+    "incidenten": {
       "menuItems":
       [
         {
           "title": "overzicht",
-          "path": "meldingen-overzicht.php",
+          "path": "incidenten-overzicht.php",
           "type": ["user", "admin"]
         },
         {
           "title": "toevoegen",
-          "path": "meldingen-toevoegen.php",
+          "path": "new-ticket.php",
           "type": ["user", "admin"]
         }
       ]

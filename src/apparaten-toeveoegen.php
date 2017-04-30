@@ -29,8 +29,8 @@ foreach ($menuItems as $key => $value) {
 }
 // load functions.php
 include "functions.php";
-// the webpage url(needed for logout)
-$thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/$request_uri";
+
+
 ?>
 <!DOCTYPE html>
 <html>
