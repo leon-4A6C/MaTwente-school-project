@@ -149,6 +149,13 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       }
 
       $users_data = sqlSelectMultiLine("83.82.240.2", "user", "pass", "project", $sql);
+      $users_data_keys = [];
+      foreach ($users_data as $key => $value) {
+        foreach ($value[0] as $key1 => $value1) {
+          $users_data_keys[] = $key1;
+        }
+        break;
+      }
       if ($_SESSION["user"]["toegangs_level"] == "admin") {
         foreach ($users_data as $key => $value) {
           foreach ($value as $key1 => $value1) {
@@ -183,13 +190,17 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
         }
       }
       if ($_GET["asc"] == true) {
-        foreach ($users_data as $key => $value) {
-          echo "<h1>een ding waar hij iets heeft gevonden.</h1>"; // I'll just figure this out later
+        foreach ($users_data as $key => $value){
+          if (count($users_data)>1) {
+            echo "<h1>$users_data_keys[$key]</h1>";
+          }
           echo twoDimenTableWithSortLinks($value, false, $_GET["search"]);
         }
       } else {
         foreach ($users_data as $key => $value) {
-          echo "<h1>een ding waar hij iets heeft gevonden.</h1>"; // I'll just figure this out later
+          if (count($users_data)>1) {
+            echo "<h1>$users_data_keys[$key]</h1>";
+          }
           echo twoDimenTableWithSortLinks($value, true, $_GET["search"]);
         }
       }
