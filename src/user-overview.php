@@ -160,8 +160,8 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
       if ($_SESSION["user"]["toegangs_level"] == "admin") {
         foreach ($users_data as $key => $value) {
           foreach ($value as $key1 => $value1) {
-            $forms = "<form id='".$users_data[$key]["gebruikersnaam"]."-edit' action='user-settings.php' method='post' style='display:none'>";
-            foreach ($value as $key2 => $value2) {
+            $forms = "<form id='".$value1['gebruikersnaam']."-edit' action='user-settings.php' method='post' style='display:none'>";
+            foreach ($value1 as $key2 => $value2) {
               $forms .= "<input type='hidden' name='$key2' value=\"$value2\">";
             }
             $forms .= "</form>";
