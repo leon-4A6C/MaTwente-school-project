@@ -46,6 +46,9 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
   <body>
     <header>
       <div class="profileBar">
+        <form id="logout" action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="get" style="display: none;">
+          <input type="hidden" name="logout" value="true">
+        </form>
         <?php
         if (!$_SESSION["user"]["toegangs_level"]) {
           echo "<div class='profile'>";
@@ -54,7 +57,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           echo "<div class='profile'><a href=''#'>";
           echo "<img src=\"images/profiles/".$_SESSION["user"]["profile_path"]."\" alt=\"profile\" class=\"profilePicture\">";
           echo "</a><ul><li>";
-          echo "<a href='$thisPage?logout=true'>logout</a>";
+          echo "<a onclick='document.getElementById(\"logout\").submit();'>logout</a>";
           echo "</li><li>";
           echo "<form id='user-settings' action='user-settings.php' method='post' style='display:none'>";
           foreach ($_SESSION["user"] as $key => $value) {
@@ -64,7 +67,7 @@ $thisPage = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HO
           echo "<a onclick='document.getElementById(\"user-settings\").submit();' href='#'>settings</a>";
           echo "</li></ul></div>";
           echo "<div class='status'><span>".$_SESSION["user"]["naam"]."</span><br>
-          <a href='$thisPage?logout=true'>logout</a></div>";
+          <a onclick='document.getElementById(\"logout\").submit();'>logout</a></div>";
         }
         ?>
         <?php if (isset($_GET["logout"])) {
