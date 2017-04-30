@@ -1,5 +1,6 @@
 <?php session_start(); ?>
-<?php include "functions.php" ?>
+<?php include "functions.php";
+error_reporting(E_ALL & ~E_NOTICE); ?>
 <!DOCTYPE html>
 <html>
   <head>
