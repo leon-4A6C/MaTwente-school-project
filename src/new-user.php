@@ -186,7 +186,7 @@ include "functions.php";
             $intern_tel = "null";
           }
           $toegangs_level = $_POST["toegangs_level"];
-          $wachtwoord = hash("sha256", $wachtwoord);
+          $wachtwoord = password_hash($wachtwoord, PASSWORD_DEFAULT);
 
           //file upload
           $uploadfile = "images/profiles/" . basename($_FILES["profile_path"]["name"]);

@@ -20,7 +20,7 @@ error_reporting(E_ALL & ~E_NOTICE); ?>
       if (isset($_POST["submit"])) {
         $user = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM gebruikers WHERE gebruikersnaam = '".$_POST["gebruikersnaam"]."'")[0];
         if ($user) {
-          if ($user["wachtwoord"] == hash("sha256", $_POST["wachtwoord"])) {
+          if (password_verify($_POST["wachtwoord"], $user["wachtwoord"])) {
             $_SESSION["user"] = $user;
             $_SESSION["user"]["naam"] = $_SESSION["user"]["voornaam"] . " " . $_SESSION["user"]["achternaam"];
             echo "<succes>succesvol ingelogd</succes><meta http-equiv='refresh' content='1;url=user-overview.php'> ";

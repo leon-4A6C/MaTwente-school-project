@@ -177,7 +177,7 @@ include "functions.php";
           $gebruikersnaam = trim($_POST["gebruikersnaam"]);
           $wachtwoord = trim($_POST["wachtwoord"]);
           $toegangs_level = trim($_POST["toegangs_level"]);
-          $bevestegings_wachtwoord = hash("sha256",trim($_POST["bevestegings_wachtwoord"]));
+          $bevestegings_wachtwoord = trim($_POST["bevestegings_wachtwoord"]);
 
           if (!$toegangs_level) {
             $toegangs_level = $_SESSION["user"]["toegangs_level"];
@@ -202,11 +202,11 @@ include "functions.php";
           if (!$wachtwoord) {
             $wachtwoord = $user_id_data["wachtwoord"];
           } else {
-            $wachtwoord = hash("sha256", $wachtwoord);
+            $wachtwoord = password_hash($wachtwoord, PASSWORD_DEFAULT);
           }
 
           // check of het wachtwoord overeen komt met de persoon die ingelogd is.
-          if ($bevestegings_wachtwoord == $_SESSION["user"]["wachtwoord"]) {
+          if (password_verify($bevestegings_wachtwoord, $_SESSION["user"]["wachtwoord"])) {
             //file upload
             $uploadfile = "images/profiles/" . basename($_FILES["profile_path_file"]["name"]);
             if ($_FILES["profile_path_file"]["size"] < 300000) {
