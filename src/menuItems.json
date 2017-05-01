@@ -59,7 +59,7 @@
       [
         {
           "title": "overzicht",
-          "path": "incidenten-overzicht.php",
+            "path": "incidenten-overzicht.php",
           "type": ["user", "admin"]
         },
         {
