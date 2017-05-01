@@ -1,10 +1,12 @@
 <?php session_start(); ?>
-<?php include "functions.php";
+<?php
+error_reporting(E_ALL & ~E_NOTICE);
+include "functions.php";
 if ($_SESSION["user"]) {
   echo "<meta http-equiv='refresh' content='0;url=user-overview.php'>";
   die();
 }
-error_reporting(E_ALL & ~E_NOTICE); ?>
+?>
 <!DOCTYPE html>
 <html>
   <head>
