@@ -1,5 +1,9 @@
 <?php session_start(); ?>
 <?php include "functions.php";
+if ($_SESSION["user"]) {
+  echo "<meta http-equiv='refresh' content='0;url=user-overview.php'>";
+  die();
+}
 error_reporting(E_ALL & ~E_NOTICE); ?>
 <!DOCTYPE html>
 <html>
@@ -23,7 +27,7 @@ error_reporting(E_ALL & ~E_NOTICE); ?>
           if (password_verify($_POST["wachtwoord"], $user["wachtwoord"])) {
             $_SESSION["user"] = $user;
             $_SESSION["user"]["naam"] = $_SESSION["user"]["voornaam"] . " " . $_SESSION["user"]["achternaam"];
-            echo "<succes>succesvol ingelogd</succes><meta http-equiv='refresh' content='1;url=user-overview.php'> ";
+            echo "<succes>succesvol ingelogd</succes><meta http-equiv='refresh' content='1;url=user-overview.php'>";
           } else {
             echo "<error>verkeerde wachtwoord ingevuld</error>";
           }
