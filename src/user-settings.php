@@ -162,7 +162,6 @@ include "functions.php";
         ?>
         <input required type="password" name="bevestegings_wachtwoord" value="" placeholder="bevestiging wachtwoord">
         <input type="hidden" name="id" value="<?php echo $_POST['id']?>">
-        <input type="hidden" name="profile_path" value="<?php echo $_POST['profile_path']?>">
         <input type="submit" name="submit" value="wijzig account">
         <?php #form handler
         if (isset($_POST["submit"])) {
@@ -215,7 +214,7 @@ include "functions.php";
                 $profile_path = $_FILES["profile_path_file"]["name"];
               }else {
                 if ($_FILES["profile_path_file"]["error"] == UPLOAD_ERR_NO_FILE) {
-                  $profile_path = $_POST["profile_path"];
+                  $profile_path = $user_id_data["profile_path"];
                 } else {
                   echo "<error>er ging iets fout met de afbeelding probeer het opnieuw of laat hem leeg voor een standaard afbeelding.</error>";
                 }
@@ -241,6 +240,7 @@ include "functions.php";
               if ($_SESSION["user"]["toegangs_level"] == "admin") {
                 echo "<succes>account succesvol gewijzigd</succes><meta http-equiv=\"refresh\" content=\"2; url=user-overview.php\" />";
               } else {
+                logout();
                 echo "<succes>account succesvol gewijzigd <a href='index.php'>login</a></succes><meta http-equiv=\"refresh\" content=\"2; url=index.php\" />";
               }
             } else {
