@@ -164,13 +164,13 @@ include "functions.php";
         if (isset($_POST["submit"])) {
 
           // clean user input
-          $voornaam = ucfirst(trim($_POST["voornaam"]));
-          $achternaam = trim($_POST["achternaam"]);
-          $intern_tel = trim($_POST["intern_tel"]);
-          $email = trim($_POST["email"]);
-          $gebruikersnaam = trim($_POST["gebruikersnaam"]);
+          $voornaam = htmlspecialchars(ucfirst(trim($_POST["voornaam"])));
+          $achternaam = htmlspecialchars(trim($_POST["achternaam"]));
+          $intern_tel = htmlspecialchars(trim($_POST["intern_tel"]));
+          $email = htmlspecialchars(trim($_POST["email"]));
+          $gebruikersnaam = htmlspecialchars(trim($_POST["gebruikersnaam"]));
           $wachtwoord = trim($_POST["wachtwoord"]);
-          $geslacht = $_POST["geslacht"];
+          $geslacht = htmlspecialchars($_POST["geslacht"]);
 
           if ($_POST["afdelingen_id"] == 'false') {
             $afdelingen_id = "null";

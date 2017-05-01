@@ -186,4 +186,18 @@ function logout() {
   echo "<meta http-equiv=\"refresh\" content=\"0; url=index.php\" />";
 }
 
+function check($var, $int) {
+  //checks if it has a value and if not it will make it null
+  if (empty($var)) {
+    $var = "null";
+  } else {
+    if ($int) {
+      $var = "$var";
+    } else {
+      $var = "'$var'";
+    }
+  }
+  return $var;
+}
+
 ?>

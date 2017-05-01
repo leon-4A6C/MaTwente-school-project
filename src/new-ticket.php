@@ -118,27 +118,57 @@ include "functions.php";
     <main class="new-ticket">
       <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
         <label for="onderwerp">onderwerp</label><br>
-        <input type="text" name="onderwerp" value="" placeholder="onderwerp"><br>
+        <input type="text" name="onderwerp" value="<?php echo $_POST['onderwerp'] ?>" placeholder="onderwerp"><br>
         <label for="omschrijving">omschrijving</label><br>
-        <textarea name="omschrijving" rows="15" cols="40" placeholder="omschrijving"></textarea><br>
+        <textarea name="omschrijving" rows="15" cols="40" placeholder="omschrijving"><?php echo $_POST['omschrijving'] ?></textarea><br>
         <?php
         if ($_SESSION["user"]["toegangs_level"] == "admin") {
-          echo '<label for="afhandel_tijd">afhandel tijd </label>';
-          echo '<input type="number" name="afhandel_tijd" placeholder="afhandel tijd" value="" min="0"><br><br>';
-          echo '<label for="oorzaak">oorzaak</label><br>';
-          echo '<textarea name="oorzaak" rows="8" cols="40" placeholder="oorzaak"></textarea><br>';
-          echo '<label for="oplossing">oplossing</label><br>';
-          echo '<textarea name="oplossing" rows="8" cols="40" placeholder="oplossing"></textarea><br>';
-          echo '<label for="terugkoppeling">terugkoppeling</label><br>';
-          echo '<textarea name="terugkoppeling" rows="8" cols="40" placeholder="terugkoppeling"></textarea><br>';
+          echo "<label for=\"verantwoordelijke_id\">verantwoordelijke </label>";
+          echo "<select name='verantwoordelijke_id'>";
+          $icters = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT id, voornaam, achternaam FROM gebruikers WHERE afdelingen_id = 6"); //selecteer alle icters
+          foreach ($icters as $key => $value) {
+            echo "<option value='$value[id]' ";
+            if ($_POST['verantwoordelijke_id'] == $value["id"]) {
+              echo "selected";
+            }
+            echo ">$value[voornaam] $value[achternaam]</option>";
+          }
+          echo "</select>";
+          echo "<img title=\"de persoon die het probleem gaat oplossen of heeft opgelost\" class=\"question\" src=\"images/questionMark.svg\" alt=\"?\"><br>";
+
+          echo "<label for=\"afhandel_tijd\">afhandel tijd </label>";
+          echo "<input type=\"number\" name=\"afhandel_tijd\" placeholder=\"afhandel tijd\" value=\"$_POST[afhandel_tijd]\" min=\"0\">";
+          echo "<img title=\"het aantal minuten dat het probleem gaat kosten/heeft gekost\" class=\"question\" src=\"images/questionMark.svg\" alt=\"?\"><br><br>";
+          echo "<label for=\"oorzaak\">oorzaak</label><br>";
+          echo "<textarea name=\"oorzaak\" rows=\"8\" cols=\"40\" placeholder=\"oorzaak\">$_POST[oorzaak]</textarea><br>";
+          echo "<label for=\"oplossing\">oplossing</label><br>";
+          echo "<textarea name=\"oplossing\" rows=\"8\" cols=\"40\" placeholder=\"oplossing\">$_POST[oplossing]</textarea><br>";
+          echo "<label for=\"terugkoppeling\">terugkoppeling</label><br>";
+          echo "<textarea name=\"terugkoppeling\" rows=\"8\" cols=\"40\" placeholder=\"terugkoppeling\">$_POST[terugkoppeling]</textarea><br>";
         }
         ?>
         <input type="submit" name="submit" value="meld">
       </form>
       <?php
-        if (isset($_POST["submit"])) {
-          
+      if (isset($_POST["submit"])) {
+        $onderwerp = check(htmlspecialchars(trim($_POST["onderwerp"])), false);
+        $omschrijving = check(htmlspecialchars(trim($_POST["omschrijving"])), false);
+        $oorzaak = check(htmlspecialchars(trim($_POST["oorzaak"])), false);
+        $oplossing = check(htmlspecialchars(trim($_POST["oplossing"])), false);
+        $terugkoppeling = check(htmlspecialchars(trim($_POST["terugkoppeling"])), false);
+        $afhandel_tijd = check($_POST['afhandel_tijd'], true);
+        $verantwoordelijke_id = check($_POST["verantwoordelijke_id"], true);
+
+        $sql = "INSERT INTO incidenten(afhandel_tijd, onderwerp, omschrijving, gebruikers_id, verantwoordelijke_id, oorzaak, oplossing, terugkoppeling) VALUES
+        ($afhandel_tijd, $onderwerp, $omschrijving, ".$_SESSION['user']['id'].", $verantwoordelijke_id , $oorzaak, $oplossing, $terugkoppeling);";
+
+        $status = dataToDb("83.82.240.2", "user", "pass", "project", "incidenten", $sql);
+        if ($status === true) {
+          echo "<succes>het probleem is gemeld!</succes><meta http-equiv='refresh' content='2;url=incidenten-overzicht.php'>";
+        } else {
+          echo "<error>er is iets fout gegaan probeer het opnieuw</error>";
         }
+      }
       ?>
     </main>
     <script src="javascript/nav.js" charset="utf-8"></script>

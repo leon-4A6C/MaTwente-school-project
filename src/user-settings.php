@@ -169,14 +169,14 @@ include "functions.php";
           $user_id_data = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM gebruikers WHERE id = ".$_POST["id"])[0];
 
           // clean user input
-          $voornaam = ucfirst(trim($_POST["voornaam"]));
-          $achternaam = trim($_POST["achternaam"]);
-          $intern_tel = trim($_POST["intern_tel"]);
-          $email = trim($_POST["email"]);
+          $voornaam = htmlspecialchars(ucfirst(trim($_POST["voornaam"])));
+          $achternaam = htmlspecialchars(trim($_POST["achternaam"]));
+          $intern_tel = htmlspecialchars(trim($_POST["intern_tel"]));
+          $email = htmlspecialchars(trim($_POST["email"]));
           $gebruikersnaam = trim($_POST["gebruikersnaam"]);
           $wachtwoord = trim($_POST["wachtwoord"]);
-          $toegangs_level = trim($_POST["toegangs_level"]);
-          $bevestegings_wachtwoord = trim($_POST["bevestegings_wachtwoord"]);
+          $toegangs_level = htmlspecialchars(trim($_POST["toegangs_level"]));
+          $bevestegings_wachtwoord = htmlspecialchars(trim($_POST["bevestegings_wachtwoord"]));
 
           if (!$toegangs_level) {
             $toegangs_level = $_SESSION["user"]["toegangs_level"];
