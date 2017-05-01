@@ -139,16 +139,6 @@ include "functions.php";
           $pc_nummer = ucfirst(trim($_POST["pc_nummer"]));
           $onderhoud_datum = trim($_POST["onderhoud_datum"]);
 
-
-          if ($_POST["afdelingen_id"] == false) {
-            $apparaat_id = null;
-          } else {
-            $apparaat_id = $_POST["apparaat_id"];
-          }
-          $toegangs_level = $_POST["toegangs_level"];
-          $wachtwoord = hash("sha256", $wachtwoord);
-
-
           }
 
         ?>
