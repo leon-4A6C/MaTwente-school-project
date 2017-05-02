@@ -32,8 +32,9 @@ include "functions.php";
 
 
 ?>
-<!DOCTYPE html>
-<html>
+  <!DOCTYPE html>
+  <html>
+
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -43,10 +44,11 @@ include "functions.php";
     <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
   </head>
+
   <body>
     <header>
       <div class="profileBar">
-        <form id="logout" action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="get" style="display: none;">
+        <form id="logout" action="<?php echo $_SERVER[" PHP_SELF "]; ?>" method="get" style="display: none;">
           <input type="hidden" name="logout" value="true">
         </form>
         <?php
@@ -70,7 +72,7 @@ include "functions.php";
           <a onclick='document.getElementById(\"logout\").submit();'>logout</a></div>";
         }
         ?>
-        <?php if (isset($_GET["logout"])) {
+          <?php if (isset($_GET["logout"])) {
           logout();
         } ?>
 
@@ -115,8 +117,32 @@ include "functions.php";
       }
       ?>
     </header>
-    <main class="configuraties-toevoegen-akram">
+    <main class="new-user">
+      <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
+        <input required type="text" name="Merk" value="<?php echo $_POST[" Merk "]; ?>" placeholder="Merk">
+        <input required type="text" name="CPU" value="<?php echo $_POST[" CPU "]; ?>" placeholder="CPU">
+        <input required type="text" name="Serinummer" value="<?php echo $_POST[" Serinummer "]; ?>" placeholder="Serinummer">
+        <input required type="text" name="Geheugen" value="<?php echo $_POST[" Geheugen "]; ?>" placeholder="Geheugen">
+        <input type="submit" name="submit" value="cre&euml;er configuratie">
+        <?php #form handler
+          if (isset($_POST["submit"])) {
+
+            // clean user input
+            $Merk = ucfirst(trim($_POST["Merk"]));
+            $CPU = trim($_POST["CPU"]);
+            $Serinummer = trim($_POST["Serinummer"]);
+            $Geheugen = trim($_POST["Geheugen"]);
+
+            dataToDb("83.82.240.2", "user", "pass", "project", "configuratie_akram","INSERT INTO configuratie_akram(Merk, CPU, Serinummer, Geheugen) VALUES($Merk, $CPU, $Serinummer, $Geheugen,)");
+
+          }
+
+
+          ?>
+        </select>
+      </form>
     </main>
     <script src="javascript/nav.js" charset="utf-8"></script>
   </body>
-</html>
+
+  </html>

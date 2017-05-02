@@ -32,8 +32,9 @@ include "functions.php";
 
 
 ?>
-<!DOCTYPE html>
-<html>
+  <!DOCTYPE html>
+  <html>
+
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -43,10 +44,11 @@ include "functions.php";
     <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
   </head>
+
   <body>
     <header>
       <div class="profileBar">
-        <form id="logout" action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="get" style="display: none;">
+        <form id="logout" action="<?php echo $_SERVER[" PHP_SELF "]; ?>" method="get" style="display: none;">
           <input type="hidden" name="logout" value="true">
         </form>
         <?php
@@ -70,7 +72,7 @@ include "functions.php";
           <a onclick='document.getElementById(\"logout\").submit();'>logout</a></div>";
         }
         ?>
-        <?php if (isset($_GET["logout"])) {
+          <?php if (isset($_GET["logout"])) {
           logout();
         } ?>
 
@@ -115,8 +117,12 @@ include "functions.php";
       }
       ?>
     </header>
-    <main class="configuraties-overzicht-akram">
+    <main class="PUT FILE NAME HERE">
+      <?php
+      echo twoDimenTable(sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM configuratie_akram"));
+      ?>
+
     </main>
     <script src="javascript/nav.js" charset="utf-8"></script>
-  </body>
+    </body>
 </html>
