@@ -56,7 +56,7 @@
         },
         {
           "title": "toevoegen",
-            "path": "apparaten-toeveoegen.php",
+            "path": "apparaten-toevoegen.php",
           "type": ["admin"]
         }
       ]
