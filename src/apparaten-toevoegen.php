@@ -153,7 +153,8 @@ include "functions.php";
           $id = trim($_POST["id"]);
 
 
-          
+          dataToDb("83.82.240.2", "user", "pass", "project", "apparaat_id","INSERT INTO apparaat_id(pc_nummer, onderhoud_datum, apparaat_id) VALUES($pc_nummer, $onderhoud_datum, $_POST[apparaat_id])");
+
 
 
           }
