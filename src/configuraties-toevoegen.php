@@ -139,7 +139,7 @@ include "functions.php";
           $pc_nummer = ucfirst(trim($_POST["pc_nummer"]));
           $onderhoud_datum = trim($_POST["onderhoud_datum"]);
 
-          dataToDb("83.82.240.2", "user", "pass", "project", "configuraties","INSERT INTO configuraties(pc_nummer, onderhoud_datum, apparaat_id) VALUES($pc_nummer, $onderhoud_datum, $apparaat_id)");
+          dataToDb("83.82.240.2", "user", "pass", "project", "configuraties","INSERT INTO configuraties(pc_nummer, onderhoud_datum, apparaat_id) VALUES($pc_nummer, $onderhoud_datum, $_POST[apparaat_id])");
 
           }
 
