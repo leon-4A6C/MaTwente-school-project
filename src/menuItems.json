@@ -30,6 +30,16 @@
           "title": "toevoegen",
             "path": "configuraties-toevoegen.php",
           "type": ["user", "admin"]
+        },
+        {
+          "title": "overzicht akram",
+            "path": "configuraties-overzicht-akram.php",
+          "type": ["user", "admin"]
+        },
+        {
+          "title": "toevoegen akram",
+            "path": "configuraties-toevoegen-akram.php",
+          "type": ["user", "admin"]
         }
       ]
     },
@@ -65,6 +75,11 @@
         {
           "title": "toevoegen",
           "path": "new-ticket.php",
+          "type": ["user", "admin"]
+        },
+        {
+          "title": "toevoegen akram",
+          "path": "incidenten-melden-akram.php",
           "type": ["user", "admin"]
         }
       ]
