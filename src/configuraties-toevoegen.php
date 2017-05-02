@@ -118,7 +118,7 @@ include "functions.php";
     <main class="new-user">
       <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
         <input required type="text" name="pc_nummer" value="<?php echo $_POST["pc_nummer"]; ?>" placeholder="pc_nummer">
-        <input required type="text" name="onderhoud_datum" value="<?php echo $_POST["onderhoud_datum"]; ?>" placeholder="onderhoud_datum">
+        <input required type="Date" name="onderhoud_datum" value="<?php echo $_POST["onderhoud_datum"]; ?>" placeholder="onderhoud_datum">
         <select required name="apparaat_id">
           <option value="false">configuratie</option>
           <?php
@@ -139,7 +139,10 @@ include "functions.php";
           $pc_nummer = ucfirst(trim($_POST["pc_nummer"]));
           $onderhoud_datum = trim($_POST["onderhoud_datum"]);
 
+          dataToDb("83.82.240.2", "user", "pass", "project", "configuraties","INSERT INTO configuraties(pc_nummer, onderhoud_datum, apparaat_id) VALUES($pc_nummer, $onderhoud_datum, $apparaat_id)");
+
           }
+
 
         ?>
         </select>
