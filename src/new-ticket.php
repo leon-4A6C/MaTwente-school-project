@@ -118,13 +118,14 @@ include "functions.php";
     <main class="new-ticket">
       <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
         <label for="onderwerp">onderwerp</label><br>
-        <input type="text" name="onderwerp" value="<?php echo $_POST['onderwerp'] ?>" placeholder="onderwerp"><br>
+        <input required type="text" name="onderwerp" value="<?php echo $_POST['onderwerp'] ?>" placeholder="onderwerp"><br>
         <label for="omschrijving">omschrijving</label><br>
-        <textarea name="omschrijving" rows="15" cols="40" placeholder="omschrijving"><?php echo $_POST['omschrijving'] ?></textarea><br>
+        <textarea required name="omschrijving" rows="15" cols="40" placeholder="omschrijving"><?php echo $_POST['omschrijving'] ?></textarea><br>
         <?php
         if ($_SESSION["user"]["toegangs_level"] == "admin") {
           echo "<label for=\"verantwoordelijke_id\">verantwoordelijke </label>";
           echo "<select name='verantwoordelijke_id'>";
+          echo "<option value=\"null\"></option>";
           $icters = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT id, voornaam, achternaam FROM gebruikers WHERE afdelingen_id = 6"); //selecteer alle icters
           foreach ($icters as $key => $value) {
             echo "<option value='$value[id]' ";

@@ -4,6 +4,7 @@
 function sqlSelect($servername, $username, $password, $dbname, $sql) {
   // Create connection
   $conn = new mysqli($servername, $username, $password, $dbname);
+  $conn->set_charset("utf-8");
   // Check connection
   if ($conn->connect_error) {
     return $conn->connect_error;
@@ -25,7 +26,7 @@ function sqlSelect($servername, $username, $password, $dbname, $sql) {
 // multiple queries in database, returns three dimensional array
 function sqlSelectMultiLine($servername, $username, $password, $dbname, $sql) {
   $mysqli = new mysqli($servername, $username, $password, $dbname);
-
+  $mysqli->set_charset("utf-8");
   /* check connection */
   if (mysqli_connect_errno()) {
     printf("Connect failed: %s\n", mysqli_connect_error());
