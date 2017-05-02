@@ -115,7 +115,7 @@ include "functions.php";
       }
       ?>
     </header>
-    <main class="PUT FILE NAME HERE">
+    <main class="user-overview">
       <?php
     echo twoDimenTable(sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM apparaten"));
     ?>
