@@ -163,14 +163,15 @@ include "functions.php";
 
         $sql = "UPDATE incidenten
         SET afhandel_tijd = $afhandel_tijd,
-        SET onderwerp = $onderwerp,
-        SET omschrijving = $omschrijving,
-        SET verantwoordelijke_id = $verantwoordelijke_id,
-        SET oorzaak = $oorzaak,
-        SET oplossing = $oplossing,
-        SET terugkoppeling = $terugkoppeling WHERE id = $_POST[id];";
+        onderwerp = $onderwerp,
+        omschrijving = $omschrijving,
+        verantwoordelijke_id = $verantwoordelijke_id,
+        oorzaak = $oorzaak,
+        oplossing = $oplossing,
+        terugkoppeling = $terugkoppeling WHERE id = ". $_POST["id"];
 
         $status = dataToDb("83.82.240.2", "user", "pass", "project", "incidenten", $sql);
+        echo $status;
         if ($status === true) {
           echo "<succes>het probleem is gemeld!</succes><meta http-equiv='refresh' content='2;url=incidenten-overzicht.php'>";
         } else {

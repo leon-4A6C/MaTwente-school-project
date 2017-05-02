@@ -117,24 +117,27 @@ include "functions.php";
     </header>
     <main class="user-overview">
       <?php
-      $users_data = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM incidenten");
+      if ($_POST["delete-id"]) {
+        dataToDb("83.82.240.2", "user", "pass", "project", "incidenten", "DELETE FROM incidenten WHERE id = ".$_POST["delete-id"]);
+      }
+      $incidenten_data = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM incidenten");
       if ($_SESSION["user"]["toegangs_level"] == "admin") {
-        foreach ($users_data as $key1 => $value1) {
-          $forms = "<form id='".$value1['gebruikersnaam']."-edit' action='user-settings.php' method='post' style='display:none'>";
-          foreach ($value1 as $key2 => $value2) {
-            $forms .= "<input type='hidden' name='$key2' value=\"$value2\">";
+        foreach ($incidenten_data as $key => $value) {
+          $forms = "<form id='".$value['id']."-edit' action='change-ticket.php' method='post' style='display:none'>";
+          foreach ($value as $key1 => $value1) {
+            $forms .= "<input type='hidden' name='$key1' value=\"$value1\">";
           }
           $forms .= "</form>";
-          $forms .= "<a href='#' class='edit-button' onclick='document.getElementById(\"".$users_data[$key1]["gebruikersnaam"]."-edit\").submit();'><img src='images/edit.svg' alt='edit'></a>
-            <form id='".$users_data[$key1]["gebruikersnaam"]."-delete' action='$_SERVER[PHP_SELF]' method='post' style='display:none'>
-              <input type='hidden' name='delete-id' value='".$users_data[$key1]["id"]."'>
+          $forms .= "<a href='#' class='edit-button' onclick='document.getElementById(\"".$incidenten_data[$key]["id"]."-edit\").submit();'><img src='images/edit.svg' alt='edit'></a>
+            <form id='".$incidenten_data[$key]["id"]."-delete' action='$_SERVER[PHP_SELF]' method='post' style='display:none'>
+              <input type='hidden' name='delete-id' value='".$incidenten_data[$key]["id"]."'>
             </form>
-            <a class='edit-button' onclick='document.getElementById(\"".$users_data[$key1]["gebruikersnaam"]."-delete\").submit();' href='#'><img src='images/delete.svg' alt='delete'></a>
+            <a class='edit-button' onclick='document.getElementById(\"".$incidenten_data[$key]["id"]."-delete\").submit();' href='#'><img src='images/delete.svg' alt='delete'></a>
           ";
-          $users_data[$key1]["admin_tools"] = $forms;
+          $incidenten_data[$key]["admin_tools"] = $forms;
         }
       }
-      echo twoDimenTable($users_data);
+      echo twoDimenTable($incidenten_data);
       ?>
 
     </main>
