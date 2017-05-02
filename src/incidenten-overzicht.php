@@ -115,7 +115,7 @@ include "functions.php";
       }
       ?>
     </header>
-    <main class="PUT FILE NAME HERE">
+    <main class="user-overview">
       <?php
       $users_data = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM incidenten");
       if ($_SESSION["user"]["toegangs_level"] == "admin") {
