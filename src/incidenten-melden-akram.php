@@ -21,7 +21,7 @@ foreach ($menuItems as $key => $value) {
           }
           if (!$found) {
             echo "<meta http-equiv=\"refresh\" content=\"0; url=index.php\" />";
-die("U heeft geen toestemming om hier te komen");
+            die("U heeft geen toestemming om hier te komen");
           }
         }
       }
