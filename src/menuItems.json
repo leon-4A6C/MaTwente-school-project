@@ -111,5 +111,18 @@
       ]
     },
     "menuItem": false
+  },
+  {
+    "change-ticket": {
+      "menuItems":
+      [
+        {
+          "title": "change-ticket",
+          "path": "change-ticket.php",
+          "type": ["admin"]
+        }
+      ]
+    },
+    "menuItem": false
   }
 ]
