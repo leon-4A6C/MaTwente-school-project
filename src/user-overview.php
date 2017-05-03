@@ -122,6 +122,7 @@ include "functions.php";
         <input type="text" name="search" value="<?php echo $_GET[search] ?>" placeholder="zoek op naam, email, enz.">
         <input type="image" name="submit" src="images/search.svg" alt="zoek" width="20em" style="margin-bottom:-0.5em">
       </form>
+
       <?php
       if (!empty($_GET["search"])){
         $sql = "SELECT gebruikers.id, gebruikersnaam, geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling', afdelingen_id, configuraties_nummer, toegangs_level  FROM gebruikers LEFT JOIN afdelingen ON afdelingen_id = afdelingen.id WHERE gebruikers.id LIKE \"%".$_GET["search"]."%\";";
@@ -136,8 +137,14 @@ include "functions.php";
         $sql .= "SELECT gebruikers.id, gebruikersnaam, geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling', afdelingen_id, configuraties_nummer, toegangs_level  FROM gebruikers LEFT JOIN afdelingen ON afdelingen_id = afdelingen.id WHERE configuraties_nummer LIKE \"%".$_GET["search"]."%\";";
         $sql .= "SELECT gebruikers.id, gebruikersnaam, geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling', afdelingen_id, configuraties_nummer, toegangs_level  FROM gebruikers LEFT JOIN afdelingen ON afdelingen_id = afdelingen.id WHERE toegangs_level LIKE \"%".$_GET["search"]."%\";";
       }
-      if ($_POST["delete-id"]) {
+      if ($_POST["delete-id"] && $_POST["yes"]) {
         dataToDb("83.82.240.2", "user", "pass", "project", "gebruikers", "DELETE FROM gebruikers WHERE id = ".$_POST["delete-id"]);
+      } elseif ($_POST["delete-id"] && !$_POST["no"]) {
+        echo "<error>weet je het zeker?<form action=\"".$_SERVER["PHP_SELF"]."\" method=\"post\">
+              <input type=\"hidden\" name=\"delete-id\" value=\"".$_POST['delete-id']."\">
+              <input type=\"submit\" name=\"yes\" value=\"ja\">
+              <input type=\"submit\" name=\"no\" value=\"nee\">
+            </form></error>";
       }
       if (empty($sql)) {
         $sql = "SELECT gebruikers.id, gebruikersnaam, geslacht, voornaam, achternaam, intern_tel, email, afdelingen.naam AS 'afdeling', afdelingen_id, configuraties_nummer, toegangs_level  FROM gebruikers LEFT JOIN afdelingen ON afdelingen_id = afdelingen.id;";
