@@ -137,20 +137,11 @@ include "functions.php";
         if (isset($_POST["submit"])) {
 
           // clean user input
-          $pc_nummer = ucfirst(trim($_POST["pc_nummer"]));
-          $onderhoud_datum = trim($_POST["onderhoud_datum"]);
-
+          $pc_nummer = check(ucfirst(trim($_POST["pc_nummer"])), false);
+          $onderhoud_datum = check(trim($_POST["onderhoud_datum"]), false);
           dataToDb("83.82.240.2", "user", "pass", "project", "configuraties","INSERT INTO configuraties(pc_nummer, onderhoud_datum, apparaat_id) VALUES($pc_nummer, $onderhoud_datum, $_POST[apparaat_id])");
 
           }
-          if (empty($onderhoud_datum) || !$onderhoud_datum) {
-            echo "jeej het is gelukt! REDIRECT HERE!";
-          } else {
-            echo $onderhoud_datum;
-          }
-
-
-
         ?>
         </select>
       </form>
