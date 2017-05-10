@@ -154,8 +154,12 @@ include "functions.php";
           $id = trim($_POST["id"]);
 
 
-          dataToDb("83.82.240.2", "user", "pass", "project", "apparaten",
-          "INSERT INTO apparaten(pc_nummer, opslag_ssd, opslag_hdd, cpu, gpu, os, merk, memory, id, ) VALUES($pc_nummer, $opslag_ssd, $opslag_hdd, $cpu, $gpu, $os, $merk, $memory, $id)");
+          $status = dataToDb("83.82.240.2", "user", "pass", "project", "apparaten", "INSERT INTO apparaten(pc_nummer, opslag_ssd, opslag_hdd, cpu, gpu, os, merk, memory, id, ) VALUES($pc_nummer, $opslag_ssd, $opslag_hdd, $cpu, $gpu, $os, $merk, $memory, $id)");
+          if (empty($status) || !$status) {
+            echo "jeej het is gelukt! REDIRECT HERE!";
+          } else {
+            echo $status;
+          }
 
 
 
