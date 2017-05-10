@@ -195,7 +195,7 @@ function check($var, $int) {
     if ($int) {
       $var = "$var";
     } else {
-      $var = "'$var'";
+      $var = "\"$var\"";
     }
   }
   return $var;
