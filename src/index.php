@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 <?php
-error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(0);
 include "functions.php";
 if ($_SESSION["user"]) {
   echo "<meta http-equiv='refresh' content='0;url=user-overview.php'>";

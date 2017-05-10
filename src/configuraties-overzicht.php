@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 <?php
-error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(0);
 $request_uri = substr($_SERVER["REQUEST_URI"], 1);
 // load menuItems.json
 $menuItemsFile = fopen("menuItems.json", "r") or die("unable to open menuItems.json");
