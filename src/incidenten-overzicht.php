@@ -121,7 +121,9 @@ include "functions.php";
       if ($_POST["delete-id"]) {
         dataToDb("83.82.240.2", "user", "pass", "project", "incidenten", "DELETE FROM incidenten WHERE id = ".$_POST["delete-id"]);
       }
-      $incidenten_data = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT * FROM incidenten");
+      $incidenten_data = sqlSelect("83.82.240.2", "user", "pass", "project", "SELECT voornaam,	achternaam, id,	afhandel_tijd	up_votes,	onderwerp	omschrijving,	gebruikers_id,	aanmelddag,	verantwoordelijke_id,	oorzaak,	oplossing	terugkoppeling,
+        FROM incidenten , gebruikers as g
+        WHERE  incidenten.verantwoordelijke_id = g.id );
       if ($_SESSION["user"]["toegangs_level"] == "admin") {
         foreach ($incidenten_data as $key => $value) {
           $forms = "<form id='".$value['id']."-edit' action='change-ticket.php' method='post' style='display:none'>";
