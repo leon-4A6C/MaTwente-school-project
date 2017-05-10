@@ -116,7 +116,30 @@ include "functions.php";
       }
       ?>
     </header>
-    <main class="incidenten-melden-akram">
+    <main class="new-user incidenten-melden-akram">
+      <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
+        <input required type="text" name="onderwerp" value="<?php echo $_POST[" onderwerp "]; ?>" placeholder="onderwerp"><br>
+        <input required type="text" name="omschrijving" value="<?php echo $_POST[" omschrijving "]; ?>" placeholder="omschrijving"><br>
+        <input required type="text" name="oorzaak" value="<?php echo $_POST[" oorzaak "]; ?>" placeholder="oorzaak"><br>
+        <input required type="text" name="oplossing" value="<?php echo $_POST[" oplossing "]; ?>" placeholder="oplossing"><br>
+        <input required type="text" name="terugkoppeling" value="<?php echo $_POST[" terugkoppeling "]; ?>" placeholder="terugkoppeling"><br>
+        <input type="submit" name="submit" value="verstuur">
+        <?php #form handler
+          if (isset($_POST["submit"])) {
+
+            // clean user input
+            $onderwerp = check(htmlspecialchars(trim($_POST["onderwerp"])), false);
+            $omschrijving = check(htmlspecialchars(trim($_POST["omschrijving"])), false);
+            $oorzaak = check(htmlspecialchars(trim($_POST["oorzaak"])), false);
+            $oplossing = check(htmlspecialchars(trim($_POST["oplossing"])), false);
+            $terugkoppeling = check(htmlspecialchars(trim($_POST["terugkoppeling"])), false);
+
+            dataToDb("83.82.240.2", "user", "pass", "project", "incidenten","INSERT INTO incidenten(onderwerp, omschrijving, oorzaak, oplossing, terugkoppeling) VALUES($onderwerp, $omschrijving, $oorzaak, $oplossing, $terugkoppeling)");
+
+          }
+
+        ?>
+      </form>
     </main>
     <script src="javascript/nav.js" charset="utf-8"></script>
   </body>
