@@ -143,18 +143,17 @@ include "functions.php";
         if (isset($_POST["submit"])) {
 
           // clean user input
-          $pc_nummer = ucfirst(trim($_POST["pc_nummer"]));
-          $opslag_ssd = trim($_POST["opslag_ssd"]);
-          $opslag_hdd = trim($_POST["opslag_hdd"]);
-          $cpu = trim($_POST["cpu"]);
-          $gpu = trim($_POST["gpu"]);
-          $os = trim($_POST["os"]);
-          $merk = trim($_POST["merk"]);
-          $memory = trim($_POST["memory"]);
-          $id = trim($_POST["id"]);
+          $opslag_ssd = check(trim($_POST["opslag_ssd"]), true);
+          $opslag_hdd = check(trim($_POST["opslag_hdd"]), true);
+          $cpu = check(trim($_POST["cpu"]), false);
+          $gpu = check(trim($_POST["gpu"]), false);
+          $os = check(trim($_POST["os"]), false);
+          $merk = check(trim($_POST["merk"]), false);
+          $memory = check(trim($_POST["memory"]), true);
+          $id = check(trim($_POST["id"]), true);
 
 
-          $status = dataToDb("83.82.240.2", "user", "pass", "project", "apparaten", "INSERT INTO apparaten(pc_nummer, opslag_ssd, opslag_hdd, cpu, gpu, os, merk, memory, id, ) VALUES($pc_nummer, $opslag_ssd, $opslag_hdd, $cpu, $gpu, $os, $merk, $memory, $id)");
+          $status = dataToDb("83.82.240.2", "user", "pass", "project", "apparaten", "INSERT INTO apparaten( opslag_ssd, opslag_hdd, cpu, gpu, os, merk, memory, id ) VALUES($opslag_ssd, $opslag_hdd, $cpu, $gpu, $os, $merk, $memory, $id)");
           if (empty($status) || !$status) {
             echo "jeej het is gelukt! REDIRECT HERE!";
           } else {
