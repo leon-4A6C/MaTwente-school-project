@@ -143,6 +143,12 @@ include "functions.php";
           dataToDb("83.82.240.2", "user", "pass", "project", "configuraties","INSERT INTO configuraties(pc_nummer, onderhoud_datum, apparaat_id) VALUES($pc_nummer, $onderhoud_datum, $_POST[apparaat_id])");
 
           }
+          if (empty($onderhoud_datum) || !$onderhoud_datum) {
+            echo "jeej het is gelukt! REDIRECT HERE!";
+          } else {
+            echo $onderhoud_datum;
+          }
+
 
 
         ?>
