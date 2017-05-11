@@ -133,8 +133,7 @@ include "functions.php";
             $oorzaak = check(htmlspecialchars(trim($_POST["oorzaak"])), false);
             $oplossing = check(htmlspecialchars(trim($_POST["oplossing"])), false);
             $terugkoppeling = check(htmlspecialchars(trim($_POST["terugkoppeling"])), false);
-
-            dataToDb("83.82.240.2", "user", "pass", "project", "incidenten","INSERT INTO incidenten(onderwerp, omschrijving, oorzaak, oplossing, terugkoppeling) VALUES($onderwerp, $omschrijving, $oorzaak, $oplossing, $terugkoppeling)");
+            dataToDb("83.82.240.2", "user", "pass", "project", "incidenten", "INSERT INTO incidenten(onderwerp, omschrijving, oorzaak, oplossing, terugkoppeling) VALUES($onderwerp, $omschrijving, $oorzaak, $oplossing, $terugkoppeling)");
 
           }
 
